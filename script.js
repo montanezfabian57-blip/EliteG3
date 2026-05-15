@@ -2199,6 +2199,8 @@
             const [showBattleResetPanel, setShowBattleResetPanel] = useState(false);
             const [isModalOpen, setIsModalOpen] = useState(false);
             const [isCatModalOpen, setIsCatModalOpen] = useState(false);
+            const [isSavingProfile, setIsSavingProfile] = useState(false);
+            const [isUploadingProfilePhoto, setIsUploadingProfilePhoto] = useState(false);
             const [editingId, setEditingId] = useState(null);
             const [contextMenuProfileId, setContextMenuProfileId] = useState(null);
             const [contextProfile, setContextProfile] = useState(null);
@@ -2564,12 +2566,15 @@ const getInitialCatFormData = () => ({
             const handleLocalProfilePhotoUpload = async (event) => {
                 const selectedFile = event.target.files?.[0];
                 if (!selectedFile) return;
+                setIsUploadingProfilePhoto(true);
                 try {
                     const uploadedUrl = await uploadFileToFirebaseStorage(selectedFile, 'perfiles/fotos-principales');
                     setFormData(prev => withProfilePhotoSyncedToGallery(prev, uploadedUrl));
                 } catch (error) {
                     console.error('Error al cargar foto de perfil local:', error);
+                    window.alert('No se pudo subir la foto seleccionada. Probá de nuevo.');
                 } finally {
+                    setIsUploadingProfilePhoto(false);
                     event.target.value = '';
                 }
             };
@@ -3679,26 +3684,29 @@ const getInitialCatFormData = () => ({
                 return currentGalleryModeLabel;
             }, [galleryViewMode, selectedCharacterBuckets, activeGalleryBucket, isGalleryBucketMode, currentGalleryModeLabel]);
 
-const saveProfile = (e) => {
+const saveProfile = async (e) => {
                 e.preventDefault();
+                if (isSavingProfile || isUploadingProfilePhoto) return;
+                setIsSavingProfile(true);
                 const profileData = { ...formData };
 
-                if (editingId) {
-                    // Si estamos editando, buscamos el lugar exacto y lo actualizamos
-                    db.ref(`perfiles/${editingId}`).set(profileData)
-                        .then(() => {
-                            setIsModalOpen(false);
-                            setEditingId(null);
-                        })
-                        .catch(err => console.error("Error al excitar la base de datos:", err));
-                } else {
-                    // Si es nuevo, lo empujamos con fuerza a la colección
-                    db.ref('perfiles').push(profileData)
-                        .then(() => {
-                            setIsModalOpen(false);
-                            setFormData(getEmptyProfileFormData());
-                        })
-                        .catch(err => console.error("No pudo entrar el perfil:", err));
+                try {
+                    if (editingId) {
+                        // Si estamos editando, buscamos el lugar exacto y lo actualizamos
+                        await db.ref(`perfiles/${editingId}`).set(profileData);
+                        setIsModalOpen(false);
+                        setEditingId(null);
+                    } else {
+                        // Si es nuevo, lo empujamos con fuerza a la colección
+                        await db.ref('perfiles').push(profileData);
+                        setIsModalOpen(false);
+                        setFormData(getEmptyProfileFormData());
+                    }
+                } catch (err) {
+                    console.error("No se pudo guardar el perfil:", err);
+                    window.alert('No se pudo guardar el perfil. Revisá tu conexión e intentá de nuevo.');
+                } finally {
+                    setIsSavingProfile(false);
                 }
             };
             const saveCategory = async (e) => {
@@ -7256,8 +7264,12 @@ const saveProfile = (e) => {
                         type="file"
                         accept="image/*,.gif"
                         onChange={handleLocalProfilePhotoUpload}
+                        disabled={isUploadingProfilePhoto || isSavingProfile}
                         className="w-full theme-surface-soft border border-dashed theme-border-secondary p-4 rounded-xl outline-none text-slate-200 font-semibold text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-cyan-500/20 file:px-3 file:py-2 file:text-cyan-200 file:font-black"
                     />
+                    {isUploadingProfilePhoto && (
+                        <p className="text-[11px] font-bold text-cyan-300">Subiendo foto al servidor...</p>
+                    )}
                 </div>
 
                 <div className="space-y-1">
@@ -7305,8 +7317,12 @@ const saveProfile = (e) => {
                                                 <LucideIcon name="trash-2" size={20} />
                                             </button>
                                         )}
-                                        <button type="submit" className="btn-metal btn-metal--gold flex-1 py-8 rounded-xl text-xs">
-                                            {editingId ? 'Actualizar Registro' : 'Guardar Perfil'}
+                                        <button type="submit" disabled={isSavingProfile || isUploadingProfilePhoto} className="btn-metal btn-metal--gold flex-1 py-8 rounded-xl text-xs disabled:cursor-not-allowed disabled:opacity-60">
+                                            {isUploadingProfilePhoto
+                                                ? 'Subiendo archivo...'
+                                                : isSavingProfile
+                                                    ? 'Guardando...'
+                                                    : (editingId ? 'Actualizar Registro' : 'Guardar Perfil')}
                                         </button>
                                     </div>
                                 </form>
