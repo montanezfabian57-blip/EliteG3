@@ -2257,6 +2257,7 @@
             const [showIncompleteMainPhotosOnly, setShowIncompleteMainPhotosOnly] = useState(false);
             const [showBrokenPhotosOnly, setShowBrokenPhotosOnly] = useState(false);
             const [tallerMissingPhotosTooltipProfileId, setTallerMissingPhotosTooltipProfileId] = useState('');
+            const [activeGalleryProfileId, setActiveGalleryProfileId] = useState('');
             const galleryPlaybackTimeoutRef = useRef(null);
             const galleryViewerOverlayRef = useRef(null);
             const galleryViewerMediaRef = useRef(null);
@@ -2349,6 +2350,7 @@ const getInitialCatFormData = () => ({
                     battlePhotoPrefs: profile?.batallaFotosPreferidas || profile?.galeria?.battlePhotoPreferences || {},
                     profilePhotoUrl: profile?.fotos?.[0] || ''
                 });
+                setActiveGalleryProfileId(profile?.firebaseId || profile?.id || '');
                 nuevaVentana?.focus();
                 setSelectedTallerProfileId('');
                 setTallerMissingPhotosTooltipProfileId('');
@@ -2707,6 +2709,29 @@ const getInitialCatFormData = () => ({
                     });
                 }
             }, [editingId, formData.nombre, formData.profesion, formData.galeria?.fotos, formData.galeria?.videos, formData.batallaFotosPreferidas]);
+
+            useEffect(() => {
+                if (!activeGalleryProfileId) return;
+                const galleryWindow = galleryWindowRef.current;
+                if (!galleryWindow || galleryWindow.closed) return;
+                if (editingId && editingId === activeGalleryProfileId) return;
+
+                const liveProfile = perfiles.find((profile) => (profile?.firebaseId || profile?.id) === activeGalleryProfileId);
+                if (!liveProfile) return;
+
+                renderGalleryWindow({
+                    targetWindow: galleryWindow,
+                    profileName: liveProfile?.nombre || '',
+                    profession: liveProfile?.profesion || '',
+                    photos: [
+                        ...((liveProfile?.galeria?.fotos || []).map((item, index) => ({ ...normalizeGalleryItem(item, 'image'), sourceTag: 'fotos', sourceIndex: index }))),
+                        ...((liveProfile?.galeria?.videos || []).map((item, index) => ({ ...normalizeGalleryItem(item, 'video'), sourceTag: 'videos', sourceIndex: index })))
+                    ],
+                    editingId: liveProfile?.firebaseId || liveProfile?.id || '',
+                    battlePhotoPrefs: liveProfile?.batallaFotosPreferidas || liveProfile?.galeria?.battlePhotoPreferences || {},
+                    profilePhotoUrl: liveProfile?.fotos?.[0] || ''
+                });
+            }, [activeGalleryProfileId, perfiles, editingId]);
 
             useEffect(() => {
                 const handleMessage = async (event) => {
@@ -4939,6 +4964,7 @@ const saveProfile = (e) => {
                                                             battlePhotoPrefs: selectedTallerProfile?.batallaFotosPreferidas || selectedTallerProfile?.galeria?.battlePhotoPreferences || {},
                                                             profilePhotoUrl: selectedTallerProfile?.fotos?.[0] || ''
                                                         });
+                                                        setActiveGalleryProfileId(selectedTallerProfile?.firebaseId || selectedTallerProfile?.id || '');
                                                         nuevaVentana?.focus();
                                                     }}
                                                     className="btn-metal py-3 rounded-xl text-[11px] font-black tracking-wide uppercase"
