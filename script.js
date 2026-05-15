@@ -2893,15 +2893,7 @@ const getInitialCatFormData = () => ({
                 let anonGalleryData = {};
                 const cachedPerfiles = safeReadCache(PERFIL_CACHE_KEY, []);
                 if (Array.isArray(cachedPerfiles) && cachedPerfiles.length) {
-                    const sanitizedCachedPerfiles = cachedPerfiles
-                        .map((cachedProfile) => {
-                            const normalized = mapProfileToFormData(cachedProfile);
-                            const firebaseId = cachedProfile?.firebaseId || cachedProfile?.id || '';
-                            return firebaseId ? { ...normalized, firebaseId } : normalized;
-                        })
-                        .filter((profile) => profile?.isAnonymousGallery || profile?.firebaseId || profile?.nombre);
-                    setPerfiles(sanitizedCachedPerfiles);
-                    safeWriteCache(PERFIL_CACHE_KEY, sanitizedCachedPerfiles);
+                    setPerfiles(cachedPerfiles);
                 }
                 const cachedAudios = safeReadCache(AUDIO_CACHE_KEY, []);
                 if (Array.isArray(cachedAudios) && cachedAudios.length) {
