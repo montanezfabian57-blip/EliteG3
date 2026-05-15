@@ -3955,11 +3955,15 @@ const saveProfile = (e) => {
                     ...derivedState
                 };
             };
+            const hasArenaPairBeenPlayed = (matchups = {}, profileAId = '', profileBId = '') => {
+                if (!profileAId || !profileBId || profileAId === profileBId) return false;
+                const key = getPairKey(profileAId, profileBId);
+                return isMatchupResolved(matchups, key);
+            };
             const findNextPendingPairInGroup = (groupIds = [], playedMatchups = {}) => {
                 for (let i = 0; i < groupIds.length - 1; i++) {
                     for (let j = i + 1; j < groupIds.length; j++) {
-                        const key = getPairKey(groupIds[i], groupIds[j]);
-                        if (!isMatchupResolved(playedMatchups, key)) return [groupIds[i], groupIds[j]];
+                        if (!hasArenaPairBeenPlayed(playedMatchups, groupIds[i], groupIds[j])) return [groupIds[i], groupIds[j]];
                     }
                 }
                 return null;
@@ -4088,7 +4092,7 @@ const saveProfile = (e) => {
                     !!currentChallengerId &&
                     currentChampionId !== currentChallengerId &&
                     !!currentGroup &&
-                    !isMatchupResolved(globalMatchups, getPairKey(currentChampionId, currentChallengerId))
+                    !hasArenaPairBeenPlayed(globalMatchups, currentChampionId, currentChallengerId)
                 );
                 const nextPendingPair = groupedIds.length
                     ? findNextPendingPairByGroups(groupedIds, arenaState.matchups || {}, globalMatchups)
@@ -4265,6 +4269,7 @@ const saveProfile = (e) => {
                 if (winnerId !== championId && winnerId !== challengerId) return;
                 const loserId = winnerId === championId ? challengerId : championId;
                 if (!winnerId || !loserId) return;
+                if (hasArenaPairBeenPlayed(currentGlobalState?.matchups || {}, winnerId, loserId)) return;
 
                 const pairKey = getPairKey(winnerId, loserId);
                 const updatedDirectMatchups = {
