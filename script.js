@@ -471,10 +471,10 @@
                             const dbRef = window.opener && window.opener.firebase && window.opener.firebase.database ? window.opener.firebase.database() : null;
                             const normalizeLabel = (rawLabel = '') => validLabels.includes(rawLabel) ? rawLabel : '';
                             const brokenCards = new Set();
-                            const DND_PAYLOAD_TYPE = 'application/x-battle-slot-item';
-                            const LONG_PRESS_MS = 280;
-                            let longPressTimer = null;
-                            let touchPayload = null;
+                            var DND_PAYLOAD_TYPE = 'application/x-battle-slot-item';
+                            var LONG_PRESS_MS = 280;
+                            var longPressTimer = null;
+                            var touchPayload = null;
                             const isImagePayload = (payload) => String(payload?.mediaType || '').trim() === 'image';
                             const assignToSlot = (payload = {}, slotId = '') => {
                                 if (!window.opener || !slotId || !isImagePayload(payload)) return false;
@@ -505,7 +505,7 @@
                                 await galleryRef.set(currentItems);
                                 return true;
                             };
-                            let activeSlotSelectionId = '';
+                            var activeSlotSelectionId = '';
                             const slotCards = Array.from(document.querySelectorAll('.multimedia-slot-card'));
                             const slotAssignButtons = Array.from(document.querySelectorAll('[data-slot-assign]'));
                             const updateSlotCardAssignedState = (slotId = '', assignedUrl = '') => {
@@ -1550,43 +1550,43 @@
                 </div>
 
                 <script>
-                    const viewer = document.getElementById('fullscreenViewer');
-                    const viewerStage = document.getElementById('viewerStage');
-                    const galleryGrid = document.getElementById('galleryGrid');
-                    const viewerSlides = Array.from(document.querySelectorAll('.viewer-slide'));
-                    const viewerNextButton = document.getElementById('viewerNext');
-                    const viewerPlayToggleButton = document.getElementById('viewerPlayToggle');
-                    const viewerRandomToggleButton = document.getElementById('viewerRandomToggle');
-                    const modalPlayFullscreenButton = document.getElementById('modalPlayFullscreenButton');
-                    const VALID_FILE_MIME_PREFIXES = ['image/', 'video/'];
-                    const VALID_FILE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4', 'webm', 'ogg', 'mov', 'm4v'];
-                    const VIEWER_IMAGE_TIMEOUT_MS = 7000;
-                    const VIEWER_VIDEO_FALLBACK_TIMEOUT_MS = 30000;
-                    const VIEWER_RETRY_DELAY_MS = 900;
-                    const VIEWER_PRELOAD_RADIUS = 1;
-                    const VIEWER_STATES = Object.freeze({
+                    var viewer = document.getElementById('fullscreenViewer');
+                    var viewerStage = document.getElementById('viewerStage');
+                    var galleryGrid = document.getElementById('galleryGrid');
+                    var viewerSlides = Array.from(document.querySelectorAll('.viewer-slide'));
+                    var viewerNextButton = document.getElementById('viewerNext');
+                    var viewerPlayToggleButton = document.getElementById('viewerPlayToggle');
+                    var viewerRandomToggleButton = document.getElementById('viewerRandomToggle');
+                    var modalPlayFullscreenButton = document.getElementById('modalPlayFullscreenButton');
+                    var VALID_FILE_MIME_PREFIXES = ['image/', 'video/'];
+                    var VALID_FILE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4', 'webm', 'ogg', 'mov', 'm4v'];
+                    var VIEWER_IMAGE_TIMEOUT_MS = 7000;
+                    var VIEWER_VIDEO_FALLBACK_TIMEOUT_MS = 30000;
+                    var VIEWER_RETRY_DELAY_MS = 900;
+                    var VIEWER_PRELOAD_RADIUS = 1;
+                    var VIEWER_STATES = Object.freeze({
                         IDLE: 'idle',
                         SHOWING_IMAGE: 'showing-image',
                         PLAYING_VIDEO: 'playing-video',
                         TRANSITIONING: 'transitioning'
                     });
-                    let currentViewerIndex = 0;
-                    let viewerAutoplay = false;
-                    let viewerRandom = false;
-                    let viewerAutoplayTimeout = null;
-                    let viewerState = VIEWER_STATES.IDLE;
-                    let viewerTransitionToken = 0;
-                    let viewerRecoveryInProgress = false;
-                    let activeSlotSelectionId = '';
-                    const DND_PAYLOAD_TYPE = 'application/x-battle-slot-item';
-                    const LONG_PRESS_MS = 280;
-                    let longPressTimer = null;
-                    let touchPayload = null;
-                    const SWIPE_DISTANCE_THRESHOLD = 72;
-                    const SWIPE_VELOCITY_THRESHOLD = 0.35;
-                    const SWIPE_FEEDBACK_MAX_TRANSLATE = 52;
-                    const SWIPE_VERTICAL_LOCK_RATIO = 1.2;
-                    let viewerSwipeState = {
+                    var currentViewerIndex = 0;
+                    var viewerAutoplay = false;
+                    var viewerRandom = false;
+                    var viewerAutoplayTimeout = null;
+                    var viewerState = VIEWER_STATES.IDLE;
+                    var viewerTransitionToken = 0;
+                    var viewerRecoveryInProgress = false;
+                    var activeSlotSelectionId = '';
+                    var DND_PAYLOAD_TYPE = 'application/x-battle-slot-item';
+                    var LONG_PRESS_MS = 280;
+                    var longPressTimer = null;
+                    var touchPayload = null;
+                    var SWIPE_DISTANCE_THRESHOLD = 72;
+                    var SWIPE_VELOCITY_THRESHOLD = 0.35;
+                    var SWIPE_FEEDBACK_MAX_TRANSLATE = 52;
+                    var SWIPE_VERTICAL_LOCK_RATIO = 1.2;
+                    var viewerSwipeState = {
                         active: false,
                         pointerId: null,
                         startX: 0,
