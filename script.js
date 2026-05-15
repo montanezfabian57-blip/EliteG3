@@ -3039,17 +3039,14 @@ const getInitialCatFormData = () => ({
                 const ciu = (p.ciudad || '').toLowerCase();
                 const edad = calcularEdad(p.fechaNacimiento);
 
-                (Array.isArray(categorias) ? categorias : []).forEach(c => {
-                    const r = c?.reglas || {};
+                categorias.forEach(c => {
+                    const r = c.reglas;
                     let matches = true;
-                    const nacionalidades = Array.isArray(r.nacionalidades) ? r.nacionalidades : [];
-                    const profesiones = Array.isArray(r.profesiones) ? r.profesiones : [];
-                    const ciudades = Array.isArray(r.ciudades) ? r.ciudades : [];
 
                     // Filtros de texto (nacionalidad, profesión, ciudad)
-                    if (nacionalidades.length > 0 && !nacionalidades.some(n => nac === String(n || '').toLowerCase())) matches = false;
-                    if (profesiones.length > 0 && !profesiones.some(p => prof === String(p || '').toLowerCase())) matches = false;
-                    if (ciudades.length > 0 && !ciudades.some(ciu_regla => ciu === String(ciu_regla || '').toLowerCase())) matches = false;
+                    if (r.nacionalidades?.length > 0 && !r.nacionalidades.some(n => nac === n.toLowerCase())) matches = false;
+                    if (r.profesiones?.length > 0 && !r.profesiones.some(p => prof === p.toLowerCase())) matches = false;
+                    if (r.ciudades?.length > 0 && !r.ciudades.some(ciu_regla => ciu === ciu_regla.toLowerCase())) matches = false;
 
                     // Filtros de edad
                     if (r.edadMin && (edad === '?' || edad < parseInt(r.edadMin))) matches = false;
@@ -3064,7 +3061,7 @@ const getInitialCatFormData = () => ({
                     }
 
                     // USAMOS firebaseId PORQUE ES EL QUE VIENE DE LA BASE DE DATOS
-                    if (matches && c?.firebaseId) cats.push(c.firebaseId);
+                    if (matches) cats.push(c.firebaseId);
                 });
                 return cats;
             };
