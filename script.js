@@ -15,6 +15,7 @@
             firebase.initializeApp(firebaseConfig);
         }
         const db = firebase.database();
+        const storage = firebase.storage();
         const { useState, useEffect, useMemo, useRef } = React;
 
         const GALLERY_LABELS = ['C', 'P', 'B', 'N', 'S', 'E', 'X', 'R'];
@@ -1717,17 +1718,12 @@
                                 alert('Uno o más archivos no son válidos. Usá imagen o video.');
                                 return;
                             }
-                            const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
-                                const reader = new FileReader();
-                                reader.onload = () => resolve({
-                                    url: String(reader.result || ''),
-                                    type: file.type && file.type.startsWith('video/') ? 'video' : 'image'
-                                });
-                                reader.onerror = () => reject(new Error('No se pudo leer uno de los archivos seleccionados.'));
-                                reader.readAsDataURL(file);
+                            const uploadLocalFile = async (file) => ({
+                                url: await window.opener.uploadFileToFirebaseStorage(file, 'perfiles/galeria'),
+                                type: file.type && file.type.startsWith('video/') ? 'video' : 'image'
                             });
 
-                            Promise.all(selectedFiles.map(readFileAsDataUrl))
+                            Promise.all(selectedFiles.map(uploadLocalFile))
                                 .then((filesData) => {
                                     filesData.forEach((fileData, index) => {
                                         postMedia(fileData.url, fileData.type, index === 0);
@@ -1736,7 +1732,7 @@
                                     resetAddMediaModalFields();
                                 })
                                 .catch((error) => {
-                                    alert(error.message || 'No se pudo leer el archivo seleccionado.');
+                                    alert(error.message || 'No se pudo subir el archivo seleccionado.');
                                 });
                             return;
                         }
@@ -2528,6 +2524,16 @@ const getInitialCatFormData = () => ({
                     }));
                 }
             };
+            const uploadFileToFirebaseStorage = window.uploadFileToFirebaseStorage = async (file, folder = 'galeria') => {
+                if (!file) throw new Error('No se encontró el archivo para subir.');
+                const safeFolder = String(folder || 'galeria').replace(/[^a-zA-Z0-9/_-]/g, '');
+                const extension = (file.name || '').split('.').pop();
+                const sanitizedExt = extension && extension !== file.name ? `.${extension.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}` : '';
+                const uniqueId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+                const storagePath = `${safeFolder}/${uniqueId}${sanitizedExt}`;
+                const snapshot = await storage.ref(storagePath).put(file);
+                return snapshot.ref.getDownloadURL();
+            };
             const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = () => resolve(String(reader.result || ''));
@@ -2557,8 +2563,8 @@ const getInitialCatFormData = () => ({
                 const selectedFile = event.target.files?.[0];
                 if (!selectedFile) return;
                 try {
-                    const dataUrl = await readFileAsDataUrl(selectedFile);
-                    setFormData(prev => withProfilePhotoSyncedToGallery(prev, dataUrl));
+                    const uploadedUrl = await uploadFileToFirebaseStorage(selectedFile, 'perfiles/fotos-principales');
+                    setFormData(prev => withProfilePhotoSyncedToGallery(prev, uploadedUrl));
                 } catch (error) {
                     console.error('Error al cargar foto de perfil local:', error);
                 } finally {
@@ -2594,7 +2600,7 @@ const getInitialCatFormData = () => ({
                     let finalUrl = String(anonMediaUrl || '').trim();
                     if (anonMediaSource === 'file') {
                         if (!anonMediaFile) throw new Error('Seleccioná un archivo local.');
-                        finalUrl = await readFileAsDataUrl(anonMediaFile);
+                        finalUrl = await uploadFileToFirebaseStorage(anonMediaFile, 'anonimo/galeria');
                     }
                     await addAnonymousGalleryItem({ url: finalUrl, label: anonMediaLabel, autor: anonMediaAuthor, forcedTag });
                     setAnonMediaUrl('');
@@ -2619,7 +2625,7 @@ const getInitialCatFormData = () => ({
                             setGalleryAudioError('Seleccioná un archivo de audio.');
                             return;
                         }
-                        normalizedUrl = await readFileAsDataUrl(galleryAudioFile);
+                        normalizedUrl = await uploadFileToFirebaseStorage(galleryAudioFile, 'anonimo/audios');
                     } else if (!normalizedUrl) {
                         setGalleryAudioError('Completá la URL del audio.');
                         return;
