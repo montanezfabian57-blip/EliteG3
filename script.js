@@ -2886,7 +2886,7 @@ const getInitialCatFormData = () => ({
                 window.addEventListener('message', handleMessage);
                 const perfilesRef = db.ref('perfiles');
                 const anonGalleryRef = db.ref(ANON_GALLERY_NODE_PATH);
-                let perfilesData = {};
+                let perfilesById = {};
                 let anonGalleryData = {};
                 const cachedPerfiles = safeReadCache(PERFIL_CACHE_KEY, []);
                 if (Array.isArray(cachedPerfiles) && cachedPerfiles.length) {
@@ -2897,9 +2897,9 @@ const getInitialCatFormData = () => ({
                     setGalleryAudioTracks(cachedAudios);
                 }
                 const refreshPerfilesState = () => {
-                    const listaPerfiles = Object.keys(perfilesData || {}).map(key => ({
-                        ...mapProfileToFormData(perfilesData[key]),
-                        firebaseId: key // Guardamos la llave de Firebase por si necesitamos editar
+                    const listaPerfiles = Object.entries(perfilesById || {}).map(([firebaseId, perfilData]) => ({
+                        ...mapProfileToFormData(perfilData),
+                        firebaseId // Guardamos la llave de Firebase por si necesitamos editar
                     }));
                     const anonProfile = mapAnonymousGalleryToProfile(anonGalleryData || {});
                     const hasAnonGallery = Object.values(anonProfile.galeria || {}).some((items) => Array.isArray(items) && items.length > 0);
@@ -2907,10 +2907,28 @@ const getInitialCatFormData = () => ({
                     setPerfiles(nextPerfiles);
                     safeWriteCache(PERFIL_CACHE_KEY, nextPerfiles);
                 };
-                perfilesRef.on('value', (snapshot) => {
-                    perfilesData = snapshot.val() || {};
+                const handlePerfilAdded = (snapshot) => {
+                    perfilesById = {
+                        ...perfilesById,
+                        [snapshot.key]: snapshot.val() || {}
+                    };
                     refreshPerfilesState();
-                });
+                };
+                const handlePerfilChanged = (snapshot) => {
+                    perfilesById = {
+                        ...perfilesById,
+                        [snapshot.key]: snapshot.val() || {}
+                    };
+                    refreshPerfilesState();
+                };
+                const handlePerfilRemoved = (snapshot) => {
+                    const { [snapshot.key]: _, ...remainingPerfiles } = perfilesById;
+                    perfilesById = remainingPerfiles;
+                    refreshPerfilesState();
+                };
+                perfilesRef.on('child_added', handlePerfilAdded);
+                perfilesRef.on('child_changed', handlePerfilChanged);
+                perfilesRef.on('child_removed', handlePerfilRemoved);
                 anonGalleryRef.on('value', (snapshot) => {
                     anonGalleryData = snapshot.val() || {};
                     const audios = Array.isArray(anonGalleryData?.audios)
@@ -2940,7 +2958,9 @@ const getInitialCatFormData = () => ({
 
                 return () => {
                     window.removeEventListener('message', handleMessage);
-                    perfilesRef.off();
+                    perfilesRef.off('child_added', handlePerfilAdded);
+                    perfilesRef.off('child_changed', handlePerfilChanged);
+                    perfilesRef.off('child_removed', handlePerfilRemoved);
                     anonGalleryRef.off();
                     arenasRef.off();
                     arenaGlobalRef.off();
