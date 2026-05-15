@@ -2641,6 +2641,30 @@ const getInitialCatFormData = () => ({
                     setGalleryAudioError('No se pudo guardar el audio en Firebase.');
                 }
             };
+            const removeGalleryAudioTrack = async (indexToRemove) => {
+                if (!Number.isInteger(indexToRemove) || indexToRemove < 0) return;
+                setGalleryAudioError('');
+                try {
+                    const audioRef = db.ref(`${ANON_GALLERY_NODE_PATH}/audios`);
+                    const snapshot = await audioRef.once('value');
+                    const currentAudios = Array.isArray(snapshot.val()) ? snapshot.val() : [];
+                    if (!currentAudios[indexToRemove]) return;
+                    const removedTrack = {
+                        nombre: String(currentAudios[indexToRemove]?.nombre || '').trim(),
+                        url: String(currentAudios[indexToRemove]?.url || '').trim()
+                    };
+                    const updatedAudios = currentAudios.filter((_, index) => index !== indexToRemove);
+                    await audioRef.set(updatedAudios);
+                    if (removedTrack.url && removedTrack.url === selectedGalleryAudioA) {
+                        setSelectedGalleryAudioA('');
+                    }
+                    if (removedTrack.url && removedTrack.url === selectedGalleryAudioB) {
+                        setSelectedGalleryAudioB('');
+                    }
+                } catch (error) {
+                    setGalleryAudioError('No se pudo eliminar el audio de Firebase.');
+                }
+            };
             const handleDelete = async (id, e) => {
                 e.stopPropagation(); // Esto es para que no se abra la foto cuando hacés click en la cruz
                 if(confirm('¿Estás seguro de que querés eliminar esto, corazón?')) {
@@ -5333,6 +5357,29 @@ const saveProfile = (e) => {
                                         >
                                             Guardar audio en Firebase
                                         </button>
+                                        <div className="space-y-2 pt-2">
+                                            <p className="text-[11px] uppercase tracking-[0.25em] text-cyan-200/80 font-black">Audios guardados</p>
+                                            {galleryAudioTracks.length ? (
+                                                <ul className="space-y-2">
+                                                    {galleryAudioTracks.map((track, index) => (
+                                                        <li key={`${track.url}-${track.nombre}-${index}`} className="flex items-center justify-between gap-3 rounded-xl border border-slate-500/45 bg-slate-900/55 px-3 py-2">
+                                                            <span className="text-sm text-slate-100 font-bold truncate">{track.nombre}</span>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => removeGalleryAudioTrack(index)}
+                                                                className="shrink-0 w-8 h-8 rounded-full border border-rose-300/55 text-rose-200 hover:text-white hover:bg-rose-500/35 transition-all font-black text-lg leading-none"
+                                                                aria-label={`Eliminar audio ${track.nombre}`}
+                                                                title={`Eliminar ${track.nombre}`}
+                                                            >
+                                                                ×
+                                                            </button>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <p className="text-xs text-slate-300/80 font-semibold">No hay audios guardados todavía.</p>
+                                            )}
+                                        </div>
                                         {galleryAudioError ? <p className="text-xs font-black uppercase tracking-[0.12em] text-rose-300">{galleryAudioError}</p> : null}
                                         </div>
                                     )}
