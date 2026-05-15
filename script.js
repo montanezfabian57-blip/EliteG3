@@ -2247,7 +2247,6 @@
             const [isGeneralFullscreen, setIsGeneralFullscreen] = useState(false);
             const [galleryPlaybackSeconds, setGalleryPlaybackSeconds] = useState(5);
             const [galleryVisibleLimit, setGalleryVisibleLimit] = useState(20);
-            const [tallerVisibleCount, setTallerVisibleCount] = useState(12);
             const [isDownloadingAllGallery, setIsDownloadingAllGallery] = useState(false);
             const [isSidebarOpen, setIsSidebarOpen] = useState(true);
             const [isEditingGalleryLabel, setIsEditingGalleryLabel] = useState(false);
@@ -2264,8 +2263,6 @@
             const [anonMediaError, setAnonMediaError] = useState('');
             const [anonUploadType, setAnonUploadType] = useState('');
             const [galleryAudioTracks, setGalleryAudioTracks] = useState([]);
-            const gallerySentinelRef = useRef(null);
-            const tallerSentinelRef = useRef(null);
             const [galleryAudioName, setGalleryAudioName] = useState('');
             const [galleryAudioSource, setGalleryAudioSource] = useState('url');
             const [galleryAudioUrl, setGalleryAudioUrl] = useState('');
@@ -3317,34 +3314,6 @@ const getInitialCatFormData = () => ({
                 setGalleryVisibleLimit(40);
                 setSelectedGalleryIndex(null);
             }, [galleryViewMode, galleryFilterLabel, selectedTagLabels, selectedCharacterBucketIds, selectedGalleryBucket, perfiles.length]);
-            useEffect(() => {
-                if (!hasMoreGalleryPhotos) return;
-                const sentinel = gallerySentinelRef.current;
-                if (!sentinel || typeof IntersectionObserver === 'undefined') return;
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            setGalleryVisibleLimit((prev) => Math.min(prev + 12, filteredGalleryPhotos.length));
-                        }
-                    });
-                }, { rootMargin: '180px 0px' });
-                observer.observe(sentinel);
-                return () => observer.disconnect();
-            }, [hasMoreGalleryPhotos, filteredGalleryPhotos.length]);
-            useEffect(() => {
-                if (!hasMoreTallerProfiles) return;
-                const sentinel = tallerSentinelRef.current;
-                if (!sentinel || typeof IntersectionObserver === 'undefined') return;
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            setTallerVisibleCount((prev) => Math.min(prev + 12, tallerProfiles.length));
-                        }
-                    });
-                }, { rootMargin: '180px 0px' });
-                observer.observe(sentinel);
-                return () => observer.disconnect();
-            }, [hasMoreTallerProfiles, tallerProfiles.length]);
 
             useEffect(() => {
                 setSelectedGalleryBucket(null);
@@ -4757,16 +4726,11 @@ const saveProfile = async (e) => {
                 () => tallerProfiles.find((profile) => profile?.firebaseId === selectedTallerProfileId) || null,
                 [tallerProfiles, selectedTallerProfileId]
             );
-            const visibleTallerProfiles = useMemo(() => tallerProfiles.slice(0, tallerVisibleCount), [tallerProfiles, tallerVisibleCount]);
-            const hasMoreTallerProfiles = visibleTallerProfiles.length < tallerProfiles.length;
             useEffect(() => {
                 const closeTooltip = () => setTallerMissingPhotosTooltipProfileId('');
                 document.addEventListener('click', closeTooltip);
                 return () => document.removeEventListener('click', closeTooltip);
             }, []);
-            useEffect(() => {
-                setTallerVisibleCount(12);
-            }, [tallerSearchTerm, showIncompleteMainPhotosOnly, showBrokenPhotosOnly, activeTab]);
             const battleScopeOptions = useMemo(() => {
                 if (!selectedBattleScope) return [];
                 return getBattleScopeOptions(perfiles, selectedBattleScope);
@@ -5137,7 +5101,7 @@ const saveProfile = async (e) => {
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-                                {visibleTallerProfiles.map((p) => {
+                                {tallerProfiles.map((p) => {
                                     const neonClass = getNeonClassByProfession(p.profesion);
                                     const isSelected = selectedTallerProfileId && selectedTallerProfileId === p.firebaseId;
                                     const missingLabels = getMissingMainPhotoLabels(p);
@@ -5221,18 +5185,6 @@ const saveProfile = async (e) => {
                                     );
                                 })}
                             </div>
-                            {hasMoreTallerProfiles && <div ref={tallerSentinelRef} className="h-1 w-full" aria-hidden="true" />}
-                            {hasMoreTallerProfiles && (
-                                <div className="flex justify-center">
-                                    <button
-                                        type="button"
-                                        onClick={() => setTallerVisibleCount((prev) => Math.min(prev + 12, tallerProfiles.length))}
-                                        className="btn-metal btn-metal--silver inline-flex items-center gap-2 px-6 py-3 rounded-full text-[10px] text-slate-900"
-                                    >
-                                        Cargar más ({visibleTallerProfiles.length}/{tallerProfiles.length})
-                                    </button>
-                                </div>
-                            )}
 
                             {!tallerProfiles.length && (
                                 <div className="rounded-2xl border border-slate-500/30 bg-slate-900/50 px-6 py-8 text-center text-sm text-slate-300">
@@ -6107,12 +6059,11 @@ const saveProfile = async (e) => {
                                 );
                             })}
                             </div>
-                            {hasMoreGalleryPhotos && <div ref={gallerySentinelRef} className="h-1 w-full" aria-hidden="true" />}
                             {hasMoreGalleryPhotos && (
                                 <div className="flex justify-center mt-8">
                                     <button
                                         type="button"
-                                        onClick={() => setGalleryVisibleLimit((prev) => Math.min(prev + 12, filteredGalleryPhotos.length))}
+                                        onClick={() => setGalleryVisibleLimit((prev) => prev + 20)}
                                         className="btn-metal btn-metal--silver inline-flex items-center gap-2 px-6 py-3 rounded-full text-[10px] text-slate-900"
                                     >
                                         Cargar más ({visibleGalleryPhotos.length}/{filteredGalleryPhotos.length})
