@@ -397,7 +397,7 @@
                         </div>
                         <div class="multimedia-slot-actions">
                             ${!isProfileSlot ? `<button type="button" class="multimedia-slot-assign-btn" data-slot-assign="${slot.id}">DESIGNAR FOTO</button>` : ''}
-                            <button type="button" class="multimedia-slot-add-btn" data-slot-add="${slot.id}">Agregar URL/Archivo</button>
+                            <button type="button" class="multimedia-slot-add-btn" data-slot-add="${slot.id}">Agregar URL</button>
                         </div>
                     </div>
                 `;
@@ -1389,8 +1389,6 @@
                 <div id="miModal" class="modal-url">
                     <h2 style="margin:0; font-size: 14px; color: #94a3b8;">PEGAR URL DEL ARCHIVO</h2>
                     <input type="text" id="nuevaFotoUrl" placeholder="https://ejemplo.com/foto.jpg o https://youtube.com/...">
-                    <label for="nuevoArchivoLocal" style="display:block; margin-top: 14px; font-size: 10px; font-weight: 900; letter-spacing: 0.14em; color: #94a3b8; text-transform: uppercase;">o subir desde escritorio</label>
-                    <input type="file" id="nuevoArchivoLocal" accept="image/*,video/*,.gif" multiple style="width: 100%; margin-top: 8px; padding: 10px; background: #020617; border: 1px dashed rgba(34,211,238,0.65); color: #e2e8f0; border-radius: 8px; outline: none; font-size: 12px; box-shadow: 0 0 10px rgba(34,211,238,0.18);">
                     <select id="nuevoArchivoTipo" style="width: 100%; padding: 12px; margin-top: 15px; background: #020617; border: 1px solid rgba(71,85,105,0.92); color: #e2e8f0; border-radius: 8px; outline: none; box-shadow: inset 0 1px 0 rgba(148,163,184,0.18);">
                         <option value="image">Imagen</option>
                         <option value="video">Video</option>
@@ -1441,7 +1439,7 @@
                                         onclick="event.stopPropagation(); openSlotActionModal('${slot.id}', 'url');"
                                         style="width:100%; border:1px solid rgba(125,211,252,0.6); background: rgba(2,6,23,0.82); color:#e2e8f0; border-radius:8px; padding:6px 8px; font-size:10px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; box-shadow: 0 0 12px rgba(34,211,238,0.22);"
                                     >
-                                        Agregar URL/Archivo
+                                        Agregar URL
                                     </button>
                                     ${canPickFromGallery ? `<button
                                         type="button"
@@ -1617,13 +1615,6 @@
                         blockedByMediaControl: false
                     };
 
-                    function isAllowedFileType(file) {
-                        if (!file) return false;
-                        const mime = String(file.type || '').toLowerCase();
-                        const ext = String(file.name || '').split('.').pop()?.toLowerCase() || '';
-                        return VALID_FILE_MIME_PREFIXES.some((prefix) => mime.startsWith(prefix)) || VALID_FILE_EXTENSIONS.includes(ext);
-                    }
-
                     function openSlotActionModal(slotId, mode = '') {
                         activeSlotSelectionId = slotId || '';
                         const modal = document.getElementById('miModal');
@@ -1693,13 +1684,11 @@
 
                     function resetAddMediaModalFields() {
                         const urlInput = document.getElementById('nuevaFotoUrl');
-                        const localInput = document.getElementById('nuevoArchivoLocal');
                         const labelInput = document.getElementById('nuevaFotoEtiqueta');
                         const authorInput = document.getElementById('nuevaFotoAutor');
                         const mediaTypeInput = document.getElementById('nuevoArchivoTipo');
                         const slotInput = document.getElementById('slotSelectionId');
                         if (urlInput) urlInput.value = '';
-                        if (localInput) localInput.value = '';
                         if (labelInput) labelInput.value = '${GALLERY_LABELS[0]}';
                         if (authorInput) authorInput.value = '';
                         if (mediaTypeInput) mediaTypeInput.value = 'image';
@@ -1713,12 +1702,10 @@
                     async function addMediaFromModal(event) {
                         if (event?.preventDefault) event.preventDefault();
                         const urlInput = document.getElementById('nuevaFotoUrl');
-                        const localInput = document.getElementById('nuevoArchivoLocal');
                         const labelInput = document.getElementById('nuevaFotoEtiqueta');
                         const authorInput = document.getElementById('nuevaFotoAutor');
                         const mediaTypeInput = document.getElementById('nuevoArchivoTipo');
                         const normalizedUrl = (urlInput?.value || '').trim();
-                        const selectedFiles = Array.from(localInput?.files || []);
                         const mediaType = mediaTypeInput?.value || 'image';
                         const label = labelInput?.value || '${GALLERY_LABELS[0]}';
                         const autor = (authorInput?.value || '').trim();
@@ -1731,33 +1718,6 @@
                                 window.opener.postMessage({ type: 'SET_BATTLE_PHOTO_PREF_BY_URL', id: '${editingId}', slotId: slotSelectionId, url: finalUrl, mediaType: finalType, label }, '*');
                             }
                         };
-
-                        if (selectedFiles.length) {
-                            const invalidFile = selectedFiles.find((file) => !isAllowedFileType(file));
-                            if (invalidFile) {
-                                alert('Uno o más archivos no son válidos. Usá imagen o video.');
-                                return;
-                            }
-                            const uploadLocalFile = async (file) => ({
-                                url: await window.opener.uploadFileToFirebaseStorage(file, 'perfiles/galeria'),
-                                type: file.type && file.type.startsWith('video/') ? 'video' : 'image'
-                            });
-
-                            try {
-                                if (!window.opener || typeof window.opener.uploadFileToFirebaseStorage !== 'function') {
-                                    throw new Error('La ventana principal no está lista para subir archivos. Cerrá y abrí nuevamente la galería.');
-                                }
-                                const filesData = await Promise.all(selectedFiles.map(uploadLocalFile));
-                                filesData.forEach((fileData, index) => {
-                                    postMedia(fileData.url, fileData.type, index === 0);
-                                });
-                                document.getElementById('miModal').style.display = 'none';
-                                resetAddMediaModalFields();
-                            } catch (error) {
-                                alert(error.message || 'No se pudo subir el archivo seleccionado.');
-                            }
-                            return;
-                        }
 
                         postMedia(normalizedUrl, mediaType);
                         document.getElementById('miModal').style.display = 'none';
@@ -2222,7 +2182,6 @@
             const [isModalOpen, setIsModalOpen] = useState(false);
             const [isCatModalOpen, setIsCatModalOpen] = useState(false);
             const [isSavingProfile, setIsSavingProfile] = useState(false);
-            const [isUploadingProfilePhoto, setIsUploadingProfilePhoto] = useState(false);
             const [editingId, setEditingId] = useState(null);
             const [contextMenuProfileId, setContextMenuProfileId] = useState(null);
             const [contextProfile, setContextProfile] = useState(null);
@@ -2255,18 +2214,14 @@
             const [galleryEditorError, setGalleryEditorError] = useState('');
             const [isSavingGalleryEditor, setIsSavingGalleryEditor] = useState(false);
             const [tallerSearchTerm, setTallerSearchTerm] = useState('');
-            const [anonMediaSource, setAnonMediaSource] = useState('url');
             const [anonMediaUrl, setAnonMediaUrl] = useState('');
-            const [anonMediaFile, setAnonMediaFile] = useState(null);
             const [anonMediaLabel, setAnonMediaLabel] = useState(GALLERY_LABELS[0]);
             const [anonMediaAuthor, setAnonMediaAuthor] = useState('');
             const [anonMediaError, setAnonMediaError] = useState('');
             const [anonUploadType, setAnonUploadType] = useState('');
             const [galleryAudioTracks, setGalleryAudioTracks] = useState([]);
             const [galleryAudioName, setGalleryAudioName] = useState('');
-            const [galleryAudioSource, setGalleryAudioSource] = useState('url');
             const [galleryAudioUrl, setGalleryAudioUrl] = useState('');
-            const [galleryAudioFile, setGalleryAudioFile] = useState(null);
             const [galleryAudioError, setGalleryAudioError] = useState('');
             const [isGalleryMusicEnabled, setIsGalleryMusicEnabled] = useState(false);
             const [selectedGalleryAudioA, setSelectedGalleryAudioA] = useState('');
@@ -2585,24 +2540,9 @@ const getInitialCatFormData = () => ({
                     }
                 };
             };
-            const handleLocalProfilePhotoUpload = async (event) => {
-                const selectedFile = event.target.files?.[0];
-                if (!selectedFile) return;
-                setIsUploadingProfilePhoto(true);
-                try {
-                    const uploadedUrl = await uploadFileToFirebaseStorage(selectedFile, 'perfiles/fotos-principales');
-                    setFormData(prev => withProfilePhotoSyncedToGallery(prev, uploadedUrl));
-                } catch (error) {
-                    console.error('Error al cargar foto de perfil local:', error);
-                    window.alert('No se pudo subir la foto seleccionada. Probá de nuevo.');
-                } finally {
-                    setIsUploadingProfilePhoto(false);
-                    event.target.value = '';
-                }
-            };
             const addAnonymousGalleryItem = async ({ url, label, autor = '', forcedTag = '' }) => {
                 const normalizedUrl = String(url || '').trim();
-                if (!normalizedUrl) throw new Error('Ingresá una URL o seleccioná un archivo.');
+                if (!normalizedUrl) throw new Error('Ingresá una URL.');
                 const normalizedLabel = GALLERY_LABELS.includes(label) ? label : '';
                 const inferredType = detectGalleryItemType(normalizedUrl);
                 const isValidMedia = inferredType === 'image'
@@ -2627,15 +2567,9 @@ const getInitialCatFormData = () => ({
                 setAnonMediaError('');
                 try {
                     let finalUrl = String(anonMediaUrl || '').trim();
-                    if (anonMediaSource === 'file') {
-                        if (!anonMediaFile) throw new Error('Seleccioná un archivo local.');
-                        finalUrl = await uploadFileToFirebaseStorage(anonMediaFile, 'anonimo/galeria');
-                    }
                     await addAnonymousGalleryItem({ url: finalUrl, label: anonMediaLabel, autor: anonMediaAuthor, forcedTag });
                     setAnonMediaUrl('');
-                    setAnonMediaFile(null);
                     setAnonMediaAuthor('');
-                    setAnonMediaSource('url');
                 } catch (error) {
                     setAnonMediaError(error?.message || 'No se pudo guardar en galería anónima.');
                 }
@@ -2649,17 +2583,11 @@ const getInitialCatFormData = () => ({
                 }
                 try {
                     let normalizedUrl = String(galleryAudioUrl || '').trim();
-                    if (galleryAudioSource === 'file') {
-                        if (!galleryAudioFile) {
-                            setGalleryAudioError('Seleccioná un archivo de audio.');
-                            return;
-                        }
-                        normalizedUrl = await uploadFileToFirebaseStorage(galleryAudioFile, 'anonimo/audios');
-                    } else if (!normalizedUrl) {
+                    if (!normalizedUrl) {
                         setGalleryAudioError('Completá la URL del audio.');
                         return;
                     }
-                    if (galleryAudioSource === 'url' && !AUDIO_FILE_REGEX.test(normalizedUrl)) {
+                    if (!AUDIO_FILE_REGEX.test(normalizedUrl)) {
                         setGalleryAudioError('La URL debe apuntar a un archivo de audio válido.');
                         return;
                     }
@@ -2670,8 +2598,6 @@ const getInitialCatFormData = () => ({
                     await audioRef.set(updatedAudios);
                     setGalleryAudioName('');
                     setGalleryAudioUrl('');
-                    setGalleryAudioFile(null);
-                    setGalleryAudioSource('url');
                 } catch (error) {
                     setGalleryAudioError('No se pudo guardar el audio en Firebase.');
                 }
@@ -3739,7 +3665,7 @@ const getInitialCatFormData = () => ({
 
 const saveProfile = async (e) => {
                 e.preventDefault();
-                if (isSavingProfile || isUploadingProfilePhoto) return;
+                if (isSavingProfile) return;
                 setIsSavingProfile(true);
                 const profileData = { ...formData };
 
@@ -5358,37 +5284,17 @@ const saveProfile = async (e) => {
                                         <div className="grid gap-4 md:grid-cols-2">
                                             <select
                                                 className="theme-surface-soft border theme-border-secondary p-3 rounded-xl outline-none text-white font-bold"
-                                                value={anonMediaSource}
-                                                onChange={(event) => {
-                                                    setAnonMediaSource(event.target.value);
-                                                    setAnonMediaError('');
-                                                }}
-                                            >
-                                                <option value="url">URL</option>
-                                                <option value="file">Archivo de dispositivo</option>
-                                            </select>
-                                            <select
-                                                className="theme-surface-soft border theme-border-secondary p-3 rounded-xl outline-none text-white font-bold"
                                                 value={anonMediaLabel}
                                                 onChange={(event) => setAnonMediaLabel(event.target.value)}
                                             >
                                                 {GALLERY_LABELS.map((label) => <option key={label} value={label}>{label}</option>)}
                                             </select>
-                                            {anonMediaSource === 'url' ? (
-                                                <input
-                                                    placeholder="URL"
-                                                    className="md:col-span-2 theme-surface-soft border theme-border-secondary p-3 rounded-xl outline-none text-white font-bold"
-                                                    value={anonMediaUrl}
-                                                    onChange={(event) => setAnonMediaUrl(event.target.value)}
-                                                />
-                                            ) : (
-                                                <input
-                                                    type="file"
-                                                    accept={anonUploadType === 'imagen' ? 'image/*,.gif' : 'image/*,video/*,.gif'}
-                                                    className="md:col-span-2 theme-surface-soft border theme-border-secondary p-3 rounded-xl outline-none text-white font-bold"
-                                                    onChange={(event) => setAnonMediaFile(event.target.files?.[0] || null)}
-                                                />
-                                            )}
+                                            <input
+                                                placeholder="URL"
+                                                className="md:col-span-2 theme-surface-soft border theme-border-secondary p-3 rounded-xl outline-none text-white font-bold"
+                                                value={anonMediaUrl}
+                                                onChange={(event) => setAnonMediaUrl(event.target.value)}
+                                            />
                                             <input
                                                 placeholder="Autor (opcional)"
                                                 className="md:col-span-2 theme-surface-soft border theme-border-secondary p-3 rounded-xl outline-none text-white font-bold"
@@ -5420,29 +5326,12 @@ const saveProfile = async (e) => {
                                             value={galleryAudioName}
                                             onChange={(event) => setGalleryAudioName(event.target.value)}
                                         />
-                                        <select
+                                        <input
+                                            placeholder="URL"
                                             className="theme-surface-soft border theme-border-secondary p-3 rounded-xl outline-none text-white font-bold w-full"
-                                            value={galleryAudioSource}
-                                            onChange={(event) => setGalleryAudioSource(event.target.value)}
-                                        >
-                                            <option value="url">URL</option>
-                                            <option value="file">Archivo de dispositivo</option>
-                                        </select>
-                                        {galleryAudioSource === 'url' ? (
-                                            <input
-                                                placeholder="URL"
-                                                className="theme-surface-soft border theme-border-secondary p-3 rounded-xl outline-none text-white font-bold w-full"
-                                                value={galleryAudioUrl}
-                                                onChange={(event) => setGalleryAudioUrl(event.target.value)}
-                                            />
-                                        ) : (
-                                            <input
-                                                type="file"
-                                                accept="audio/*"
-                                                className="theme-surface-soft border theme-border-secondary p-3 rounded-xl outline-none text-white font-bold w-full"
-                                                onChange={(event) => setGalleryAudioFile(event.target.files?.[0] || null)}
-                                            />
-                                        )}
+                                            value={galleryAudioUrl}
+                                            onChange={(event) => setGalleryAudioUrl(event.target.value)}
+                                        />
                                         <button
                                             type="button"
                                             onClick={addGalleryAudioTrack}
@@ -7313,16 +7202,6 @@ const saveProfile = async (e) => {
                         value={formData.fotos[0] || ''}
                         onChange={e => setFormData(prev => withProfilePhotoSyncedToGallery(prev, e.target.value))}
                     />
-                    <input
-                        type="file"
-                        accept="image/*,.gif"
-                        onChange={handleLocalProfilePhotoUpload}
-                        disabled={isUploadingProfilePhoto || isSavingProfile}
-                        className="w-full theme-surface-soft border border-dashed theme-border-secondary p-4 rounded-xl outline-none text-slate-200 font-semibold text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-cyan-500/20 file:px-3 file:py-2 file:text-cyan-200 file:font-black"
-                    />
-                    {isUploadingProfilePhoto && (
-                        <p className="text-[11px] font-bold text-cyan-300">Subiendo foto al servidor...</p>
-                    )}
                 </div>
 
                 <div className="space-y-1">
@@ -7370,12 +7249,10 @@ const saveProfile = async (e) => {
                                                 <LucideIcon name="trash-2" size={20} />
                                             </button>
                                         )}
-                                        <button type="submit" disabled={isSavingProfile || isUploadingProfilePhoto} className="btn-metal btn-metal--gold flex-1 py-8 rounded-xl text-xs disabled:cursor-not-allowed disabled:opacity-60">
-                                            {isUploadingProfilePhoto
-                                                ? 'Subiendo archivo...'
-                                                : isSavingProfile
-                                                    ? 'Guardando...'
-                                                    : (editingId ? 'Actualizar Registro' : 'Guardar Perfil')}
+                                        <button type="submit" disabled={isSavingProfile} className="btn-metal btn-metal--gold flex-1 py-8 rounded-xl text-xs disabled:cursor-not-allowed disabled:opacity-60">
+                                            {isSavingProfile
+                                                ? 'Guardando...'
+                                                : (editingId ? 'Actualizar Registro' : 'Guardar Perfil')}
                                         </button>
                                     </div>
                                 </form>
