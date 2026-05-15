@@ -22,6 +22,8 @@
         const GENERAL_GALLERY_HIDDEN_LABELS = ['R'];
         const ANON_GALLERY_NODE_PATH = 'anonimo/galeria';
         const ANON_PROFILE_ID = '__anonimo_gallery__';
+        const PERFIL_CACHE_KEY = 'eliteg3:perfiles-cache:v1';
+        const AUDIO_CACHE_KEY = 'eliteg3:gallery-audios-cache:v1';
         const GALLERY_VIEW_MODES = ['PERSONAJE', 'ETIQUETA', 'GENERAL'];
         const GALLERY_VIEW_MODE_LABELS = {
             PERSONAJE: 'Personaje',
@@ -258,6 +260,23 @@
             puntuaciones: createZeroScores(),
             isAnonymousGallery: true
         });
+        const safeReadCache = (key, fallbackValue) => {
+            try {
+                const rawValue = window.localStorage.getItem(key);
+                if (!rawValue) return fallbackValue;
+                const parsed = JSON.parse(rawValue);
+                return parsed ?? fallbackValue;
+            } catch {
+                return fallbackValue;
+            }
+        };
+        const safeWriteCache = (key, value) => {
+            try {
+                window.localStorage.setItem(key, JSON.stringify(value));
+            } catch {
+                // noop: almacenamiento no disponible o cuota excedida.
+            }
+        };
         const getGallerySourceCharacterId = (profile = {}) => {
             if (profile?.isAnonymousGallery || profile?.firebaseId === ANON_PROFILE_ID) return 'anonimo';
             return profile?.firebaseId || '';
@@ -2869,6 +2888,14 @@ const getInitialCatFormData = () => ({
                 const anonGalleryRef = db.ref(ANON_GALLERY_NODE_PATH);
                 let perfilesData = {};
                 let anonGalleryData = {};
+                const cachedPerfiles = safeReadCache(PERFIL_CACHE_KEY, []);
+                if (Array.isArray(cachedPerfiles) && cachedPerfiles.length) {
+                    setPerfiles(cachedPerfiles);
+                }
+                const cachedAudios = safeReadCache(AUDIO_CACHE_KEY, []);
+                if (Array.isArray(cachedAudios) && cachedAudios.length) {
+                    setGalleryAudioTracks(cachedAudios);
+                }
                 const refreshPerfilesState = () => {
                     const listaPerfiles = Object.keys(perfilesData || {}).map(key => ({
                         ...mapProfileToFormData(perfilesData[key]),
@@ -2876,7 +2903,9 @@ const getInitialCatFormData = () => ({
                     }));
                     const anonProfile = mapAnonymousGalleryToProfile(anonGalleryData || {});
                     const hasAnonGallery = Object.values(anonProfile.galeria || {}).some((items) => Array.isArray(items) && items.length > 0);
-                    setPerfiles(hasAnonGallery ? [...listaPerfiles, anonProfile] : listaPerfiles);
+                    const nextPerfiles = hasAnonGallery ? [...listaPerfiles, anonProfile] : listaPerfiles;
+                    setPerfiles(nextPerfiles);
+                    safeWriteCache(PERFIL_CACHE_KEY, nextPerfiles);
                 };
                 perfilesRef.on('value', (snapshot) => {
                     perfilesData = snapshot.val() || {};
@@ -2893,6 +2922,7 @@ const getInitialCatFormData = () => ({
                             .filter((audio) => audio.nombre && audio.url)
                         : [];
                     setGalleryAudioTracks(audios);
+                    safeWriteCache(AUDIO_CACHE_KEY, audios);
                     refreshPerfilesState();
                 });
 
