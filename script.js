@@ -1761,7 +1761,7 @@
                             if (!window.opener || typeof window.opener.uploadFileToFirebaseStorage !== 'function') {
                                 throw new Error('No fue posible conectarse al cargador de archivos.');
                             }
-                            const uploadedUrl = await window.opener.uploadFileToFirebaseStorage(selectedFile, `galeria/${detectedType === 'video' ? 'videos' : 'fotos'}`);
+                            const uploadedUrl = await window.opener.uploadFileToFirebaseStorage(selectedFile, 'galeria/' + (detectedType === 'video' ? 'videos' : 'fotos'));
                             if (!uploadedUrl) throw new Error('No se obtuvo la URL del archivo subido.');
                             window.opener.postMessage({ type: 'ADD_IMAGE', url: uploadedUrl, label, autor, mediaType: detectedType, id: '${editingId}' }, '*');
                             if (slotSelectionId) {
