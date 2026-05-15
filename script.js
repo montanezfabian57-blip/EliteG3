@@ -4203,8 +4203,9 @@ const saveProfile = (e) => {
                 const normalizedGlobal = normalizeArenaGlobalState(arenaName, arenaGlobalState?.[globalKey] || {});
                 const globalMatchups = normalizedGlobal?.matchups || {};
                 const initialPair = findNextPendingPairByGroups(groupedIds, {}, globalMatchups);
-                if (!initialPair) return;
-                const activeGroup = getGroupForPair(groupedIds, initialPair[0], initialPair[1]);
+                const activeGroup = initialPair
+                    ? getGroupForPair(groupedIds, initialPair[0], initialPair[1])
+                    : null;
 
                 const nextArenaState = {
                     mode,
@@ -4215,11 +4216,11 @@ const saveProfile = (e) => {
                     directMatchups: normalizedGlobal?.directMatchups || {},
                     matchups: globalMatchups,
                     victoryGraph: normalizedGlobal?.victoryGraph || {},
-                    championId: initialPair[0],
-                    challengerId: initialPair[1],
+                    championId: initialPair ? initialPair[0] : null,
+                    challengerId: initialPair ? initialPair[1] : null,
                     activeGroupKey: activeGroup?.key || null,
                     activeGroupLabel: activeGroup ? `${activeGroup.typeLabel}: ${activeGroup.label}` : '',
-                    isFinished: false
+                    isFinished: !initialPair
                 };
                 const arenaKey = getArenaBattleKey(arenaName, scopeId, groupKey);
                 if (!arenaKey) return;
