@@ -237,7 +237,6 @@
         const getGalleryItemUrl = (item) => normalizeGalleryItem(item).url;
         const getGalleryItemLabel = (item) => normalizeGalleryItem(item).label;
         const getGalleryItemType = (item) => normalizeGalleryItem(item).type;
-        const ensureArray = (value) => (Array.isArray(value) ? value : []);
         const getSafeGalleryArray = (gallery, key, fallbackType = 'image') => (
             Array.isArray(gallery?.[key])
                 ? gallery[key].map((item) => normalizeGalleryItem(item, fallbackType)).filter((item) => item.url)
@@ -315,7 +314,8 @@
             const tab = window.open('', '_blank');
             if (!tab) return;
             const profileId = profile?.firebaseId || profile?.id || '';
-            const galleryItems = ensureArray(profile?.galeria?.fotos)
+            const galleryItems = Array.isArray(profile?.galeria?.fotos)
+                ? profile.galeria.fotos
                     .map((item) => normalizeGalleryItem(item, 'image'))
                     .filter((item) => item.url)
                     .map((item, sourceIndex) => ({
@@ -323,6 +323,7 @@
                         sourceTag: 'fotos',
                         sourceIndex
                     }))
+                : [];
             const galleryPhotoItems = galleryItems.filter((item) => item.type === 'image' && item.sourceTag === 'fotos');
             const safeBattlePhotoPrefs = sanitizeBattlePhotoPreferences(profile?.batallaFotosPreferidas || profile?.galeria?.battlePhotoPreferences || {});
             const normalizedProfilePhotoUrl = getSafeImageSrc(String(profile?.fotos?.[0] || profile?.foto || '').trim(), '');
@@ -513,7 +514,7 @@
                                 if (!dbRef || !profileId || sourceIndex < 0) return false;
                                 const galleryRef = dbRef.ref(\`perfiles/\${profileId}/galeria/\${sourceTag}\`);
                                 const snapshot = await galleryRef.once('value');
-                                const currentItems = ensureArray(snapshot.val());
+                                const currentItems = Array.isArray(snapshot.val()) ? snapshot.val() : [];
                                 if (!currentItems[sourceIndex]) return false;
                                 const rawItem = currentItems[sourceIndex];
                                 const nextItem = typeof rawItem === 'string'
@@ -740,9 +741,11 @@
 
             if (!isOpen || !profile) return null;
 
-            const galleryItems = ensureArray(profile?.galeria?.fotos)
+            const galleryItems = Array.isArray(profile?.galeria?.fotos)
+                ? profile.galeria.fotos
                     .map((item) => normalizeGalleryItem(item, 'image'))
                     .filter((item) => item.url)
+                : [];
             const topScores = Object.entries(profile?.puntuaciones || {})
                 .map(([label, value]) => ({ label, value: Number(value) || 0 }))
                 .sort((a, b) => b.value - a.value)
@@ -841,9 +844,11 @@
         };
         const getBattlePhotoForArena = (profile, arenaName) => {
             const normalizedArena = (arenaName || '').trim().toLowerCase();
-            const galleryImages = ensureArray(profile?.galeria?.fotos)
+            const galleryImages = Array.isArray(profile?.galeria?.fotos)
+                ? profile.galeria.fotos
                     .map((item) => normalizeGalleryItem(item, 'image'))
                     .filter((item) => item.type === 'image' && item.url)
+                : [];
             const profilePhoto = getSafeImageSrc(profile?.fotos?.[0], '');
             const fallbackPhoto = profilePhoto || 'https://via.placeholder.com/400x500';
 
@@ -2450,7 +2455,7 @@ const getInitialCatFormData = () => ({
                 const normalizedLabel = GALLERY_LABELS.includes(label) ? label : '';
                 const galleryRef = db.ref(`perfiles/${profileId}/galeria/${sourceTag}`);
                 const snapshot = await galleryRef.once('value');
-                const currentItems = ensureArray(snapshot.val());
+                const currentItems = Array.isArray(snapshot.val()) ? snapshot.val() : [];
                 if (!currentItems[sourceIndex]) return;
 
                 const updatedItems = [...currentItems];
@@ -2479,7 +2484,7 @@ const getInitialCatFormData = () => ({
 
                 const galleryRef = db.ref(`perfiles/${profileId}/galeria/${sourceTag}`);
                 const snapshot = await galleryRef.once('value');
-                const currentItems = ensureArray(snapshot.val());
+                const currentItems = Array.isArray(snapshot.val()) ? snapshot.val() : [];
                 if (!currentItems[sourceIndex]) return;
 
                 const updatedItems = [...currentItems];
@@ -2506,7 +2511,7 @@ const getInitialCatFormData = () => ({
                 if (!profileId || !sourceTag || !Number.isInteger(sourceIndex)) return;
                 const galleryRef = db.ref(`perfiles/${profileId}/galeria/${sourceTag}`);
                 const snapshot = await galleryRef.once('value');
-                const currentItems = ensureArray(snapshot.val());
+                const currentItems = Array.isArray(snapshot.val()) ? snapshot.val() : [];
                 const removedItem = currentItems[sourceIndex];
                 if (!removedItem) return;
 
@@ -2600,7 +2605,7 @@ const getInitialCatFormData = () => ({
                 const tag = forcedTag || (inferredType === 'video' ? 'videos' : 'fotos');
                 const galleryRef = db.ref(`${ANON_GALLERY_NODE_PATH}/${tag}`);
                 const snapshot = await galleryRef.once('value');
-                const currentItems = ensureArray(snapshot.val());
+                const currentItems = Array.isArray(snapshot.val()) ? snapshot.val() : [];
                 const updatedItems = [...currentItems, {
                     url: normalizedUrl,
                     label: normalizedLabel,
@@ -2639,7 +2644,7 @@ const getInitialCatFormData = () => ({
                     }
                     const audioRef = db.ref(`${ANON_GALLERY_NODE_PATH}/audios`);
                     const snapshot = await audioRef.once('value');
-                    const currentAudios = ensureArray(snapshot.val());
+                    const currentAudios = Array.isArray(snapshot.val()) ? snapshot.val() : [];
                     const updatedAudios = [...currentAudios, { nombre: normalizedName, url: normalizedUrl }];
                     await audioRef.set(updatedAudios);
                     setGalleryAudioName('');
@@ -2654,7 +2659,7 @@ const getInitialCatFormData = () => ({
                 try {
                     const audioRef = db.ref(`${ANON_GALLERY_NODE_PATH}/audios`);
                     const snapshot = await audioRef.once('value');
-                    const currentAudios = ensureArray(snapshot.val());
+                    const currentAudios = Array.isArray(snapshot.val()) ? snapshot.val() : [];
                     if (!currentAudios[indexToRemove]) return;
                     const removedTrack = {
                         nombre: String(currentAudios[indexToRemove]?.nombre || '').trim(),
