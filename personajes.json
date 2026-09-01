@@ -1,0 +1,1682 @@
+[
+ {
+    "id": "dualipa",
+    "nombre": "Dua Lipa",
+    "imagen": "personajes/dualipa.jpg",
+    "grupo": "Cantantes",
+    "pais": "Inglaterra",
+    "ciudad": "Gran Londres",
+    "fechaNacimiento": "1995-08-22",
+    "estatura": "1.73 m"
+  },
+  {
+    "id": "arianagrande",
+    "nombre": "Ariana Grande",
+    "imagen": "personajes/arianagrande.jpg",
+    "grupo": "Cantantes",
+    "pais": "Estados Unidos",
+    "ciudad": "Florida",
+    "fechaNacimiento": "1993-06-26",
+    "estatura": "1.53 m"
+  },
+  {
+    "id": "emiliamernes",
+    "nombre": "Emilia Mernes",
+    "imagen": "personajes/emiliamernes.jpg",
+    "grupo": "Cantantes",
+    "pais": "Argentina",
+    "ciudad": "Entre Ríos",
+    "fechaNacimiento": "1996-10-29",
+    "estatura": "1.64 m"
+  },
+  {
+    "id": "nickinicole",
+    "nombre": "Nicki Nicole",
+    "imagen": "personajes/nickinicole.jpg",
+    "grupo": "Cantantes",
+    "pais": "Argentina",
+    "ciudad": "Santa Fe",
+    "fechaNacimiento": "2000-08-25",
+    "estatura": "1.45 m"
+  },
+  {
+    "id": "aitana",
+    "nombre": "Aitana",
+    "imagen": "personajes/aitana.jpg",
+    "grupo": "Cantantes",
+    "pais": "España",
+    "ciudad": "Cataluña",
+    "fechaNacimiento": "1999-06-27",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "avrillavigne",
+    "nombre": "Avril Lavigne",
+    "imagen": "personajes/avrillavigne.jpg",
+    "grupo": "Cantantes",
+    "pais": "Canadá",
+    "ciudad": "Ontario",
+    "fechaNacimiento": "1984-09-27",
+    "estatura": "1.55 m"
+  },
+  {
+    "id": "anamena",
+    "nombre": "Ana Mena",
+    "imagen": "personajes/anamena.jpg",
+    "grupo": "Cantantes",
+    "pais": "España",
+    "ciudad": "Andalucía",
+    "fechaNacimiento": "1997-02-25",
+    "estatura": "1.63 m"
+  },
+  {
+    "id": "beckyg",
+    "nombre": "Becky G",
+    "imagen": "personajes/beckyg.jpg",
+    "grupo": "Cantantes",
+    "pais": "Estados Unidos",
+    "ciudad": "California",
+    "fechaNacimiento": "1997-03-02",
+    "estatura": "1.54 m"
+  },
+  {
+    "id": "anadearmas",
+    "nombre": "Ana de Armas",
+    "imagen": "personajes/anadearmas.jpg",
+    "grupo": "Actrices",
+    "pais": "Cuba",
+    "ciudad": "La Habana",
+    "fechaNacimiento": "1988-04-30",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "esterexposito",
+    "nombre": "Ester Expósito",
+    "imagen": "personajes/esterexposito.jpg",
+    "grupo": "Actrices",
+    "pais": "España",
+    "ciudad": "Comunidad de Madrid",
+    "fechaNacimiento": "2000-01-26",
+    "estatura": "1.66 m"
+  },
+  {
+    "id": "sidneysweeney",
+    "nombre": "Sidney Sweeney",
+    "imagen": "personajes/sidneysweeney.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Washington",
+    "fechaNacimiento": "1997-09-12",
+    "estatura": "1.61 m"
+  },
+  {
+    "id": "sabrinacarpenter",
+    "nombre": "Sabrina Carpenter",
+    "imagen": "personajes/sabrinacarpenter.jpg",
+    "grupo": "Cantantes",
+    "pais": "Estados Unidos",
+    "ciudad": "Pensilvania",
+    "fechaNacimiento": "1999-05-11",
+    "estatura": "1.52 m"
+  },
+  {
+    "id": "claragalle",
+    "nombre": "Clara Galle",
+    "imagen": "personajes/claragalle.jpg",
+    "grupo": "Actrices",
+    "pais": "España",
+    "ciudad": "Navarra",
+    "fechaNacimiento": "2002-04-15",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "anyaolsen",
+    "nombre": "Anya Olsen",
+    "imagen": "personajes/anyaolsen.jpg",
+    "grupo": "NSFW",
+    "pais": "Estados Unidos",
+    "ciudad": "Nueva York",
+    "fechaNacimiento": "1994-06-03",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "vanessareinhardt",
+    "nombre": "Vanessa Reinhardt",
+    "imagen": "personajes/vanessareinhardt.jpg",
+    "grupo": "NSFW",
+    "pais": "Alemania",
+    "ciudad": "Berlín",
+    "fechaNacimiento": "",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "dovecameron",
+    "nombre": "Dove Cameron",
+    "imagen": "personajes/dovecameron.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Washington",
+    "fechaNacimiento": "1996-01-15",
+    "estatura": "1.57 m"
+  },
+  {
+    "id": "amandaseyfried",
+    "nombre": "Amanda Seyfried",
+    "imagen": "personajes/amandaseyfried.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Pensilvania",
+    "fechaNacimiento": "1985-12-03",
+    "estatura": "1.59 m"
+  },
+  {
+    "id": "oliviarodrigo",
+    "nombre": "Olivia Rodrigo",
+    "imagen": "personajes/oliviarodrigo.jpg",
+    "grupo": "Cantantes",
+    "pais": "Estados Unidos",
+    "ciudad": "California",
+    "fechaNacimiento": "2003-02-20",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "angelatorres",
+    "nombre": "Angela Torres",
+    "imagen": "personajes/angelatorres.jpg",
+    "grupo": "Cantantes",
+    "pais": "Argentina",
+    "ciudad": "Buenos Aires",
+    "fechaNacimiento": "1998-08-13",
+    "estatura": "1.55 m"
+  },
+  {
+    "id": "claraceschin",
+    "nombre": "Clara Ceschin",
+    "imagen": "personajes/claraceschin.jpg",
+    "grupo": "Cantantes",
+    "pais": "Argentina",
+    "ciudad": "Mendoza",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "sadiesink",
+    "nombre": "Sadie Sink",
+    "imagen": "personajes/sadiesink.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Texas",
+    "fechaNacimiento": "2002-04-16",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "emmamyers",
+    "nombre": "Emma Myers",
+    "imagen": "personajes/emmamyers.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Florida",
+    "fechaNacimiento": "2002-04-02",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "emmastone",
+    "nombre": "Emma Stone",
+    "imagen": "personajes/emmastone.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Arizona",
+    "fechaNacimiento": "1988-11-06",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "margotrobbie",
+    "nombre": "Margot Robbie",
+    "imagen": "personajes/margotrobbie.jpg",
+    "grupo": "Actrices",
+    "pais": "Australia",
+    "ciudad": "Queensland",
+    "fechaNacimiento": "1990-07-02",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "meganfox",
+    "nombre": "Megan Fox",
+    "imagen": "personajes/meganfox.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Tennessee",
+    "fechaNacimiento": "1986-05-16",
+    "estatura": "1.63 m"
+  },
+  {
+    "id": "jessicaalba",
+    "nombre": "Jessica Alba",
+    "imagen": "personajes/jessicaalba.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "California",
+    "fechaNacimiento": "1981-04-28",
+    "estatura": "1.69 m"
+  },
+  {
+    "id": "anyataylor",
+    "nombre": "Anya Taylor-Joy",
+    "imagen": "personajes/anyataylor.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Florida",
+    "fechaNacimiento": "1996-04-16",
+    "estatura": "1.73 m"
+  },
+  {
+    "id": "amberheard",
+    "nombre": "Amber Heard",
+    "imagen": "personajes/amberheard.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Texas",
+    "fechaNacimiento": "1986-04-22",
+    "estatura": "1.70 m"
+  },
+  {
+    "id": "teagancroft",
+    "nombre": "Teagan Croft",
+    "imagen": "personajes/teagancroft.jpg",
+    "grupo": "Actrices",
+    "pais": "Australia",
+    "ciudad": "Nueva Gales del Sur",
+    "fechaNacimiento": "2004-04-23",
+    "estatura": "1.63 m"
+  },
+  {
+    "id": "hollyearl",
+    "nombre": "Holly Earl",
+    "imagen": "personajes/hollyearl.jpg",
+    "grupo": "Actrices",
+    "pais": "Inglaterra",
+    "ciudad": "Gran Londres",
+    "fechaNacimiento": "1992-08-31",
+    "estatura": "1.52 m"
+  },
+  {
+    "id": "julypena",
+    "nombre": "July Pena",
+    "imagen": "personajes/julypena.jpg",
+    "grupo": "Atletas",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "laliesposito",
+    "nombre": "Lali Espósito",
+    "imagen": "personajes/laliesposito.jpg",
+    "grupo": "Cantantes",
+    "pais": "Argentina",
+    "ciudad": "Buenos Aires",
+    "fechaNacimiento": "1991-10-10",
+    "estatura": "1.53 m"
+  },
+  {
+    "id": "elizabetholsen",
+    "nombre": "Elizabeth Olsen",
+    "imagen": "personajes/elizabetholsen.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "California",
+    "fechaNacimiento": "1989-02-16",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "kayascodelario",
+    "nombre": "Kaya Scodelario",
+    "imagen": "personajes/kayascodelario.jpg",
+    "grupo": "Actrices",
+    "pais": "Inglaterra",
+    "ciudad": "Sussex Occidental",
+    "fechaNacimiento": "1992-03-13",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "chloelang",
+    "nombre": "Chloe Lang",
+    "imagen": "personajes/chloelang.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Connecticut",
+    "fechaNacimiento": "2001-11-14",
+    "estatura": "1.55 m"
+  },
+  {
+    "id": "margaretqualley",
+    "nombre": "Margaret Qualley",
+    "imagen": "personajes/margaretqualley.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Montana",
+    "fechaNacimiento": "1994-10-23",
+    "estatura": "1.73 m"
+  },
+  {
+    "id": "hilaryduff",
+    "nombre": "Hilary Duff",
+    "imagen": "personajes/hilaryduff.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Texas",
+    "fechaNacimiento": "1987-09-28",
+    "estatura": "1.57 m"
+  },
+  {
+    "id": "eugeniasuarez",
+    "nombre": "Eugenia Suárez",
+    "imagen": "personajes/eugeniasuarez.jpg",
+    "grupo": "Actrices",
+    "pais": "Argentina",
+    "ciudad": "Buenos Aires",
+    "fechaNacimiento": "1992-03-09",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "luisanalopilato",
+    "nombre": "Luisana Lopilato",
+    "imagen": "personajes/luisanalopilato.jpg",
+    "grupo": "Actrices",
+    "pais": "Argentina",
+    "ciudad": "Buenos Aires",
+    "fechaNacimiento": "1987-05-18",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "evadedominici",
+    "nombre": "Eva De Dominici",
+    "imagen": "personajes/evadedominici.jpg",
+    "grupo": "Actrices",
+    "pais": "Argentina",
+    "ciudad": "Buenos Aires",
+    "fechaNacimiento": "1995-04-21",
+    "estatura": "1.70 m"
+  },
+  {
+    "id": "alyciadebnamcarey",
+    "nombre": "Alycia Debnam-Carey",
+    "imagen": "personajes/alyciadebnamcarey.jpg",
+    "grupo": "Actrices",
+    "pais": "Australia",
+    "ciudad": "Nueva Gales del Sur",
+    "fechaNacimiento": "1993-07-20",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "lindseymorgan",
+    "nombre": "Lindsey Morgan",
+    "imagen": "personajes/lindseymorgan.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Texas",
+    "fechaNacimiento": "1990-02-27",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "kristenbell",
+    "nombre": "Kristen Bell",
+    "imagen": "personajes/kristenbell.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Michigan",
+    "fechaNacimiento": "1980-07-18",
+    "estatura": "1.55 m"
+  },
+  {
+    "id": "scarlettjohansson",
+    "nombre": "Scarlett Johansson",
+    "imagen": "personajes/scarlettjohansson.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Nueva York",
+    "fechaNacimiento": "1984-11-22",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "angelinajolie",
+    "nombre": "Angelina Jolie",
+    "imagen": "personajes/angelinajolie.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "California",
+    "fechaNacimiento": "1975-06-04",
+    "estatura": "1.69 m"
+  },
+  {
+    "id": "emiliaclarke",
+    "nombre": "Emilia Clarke",
+    "imagen": "personajes/emiliaclarke.jpg",
+    "grupo": "Actrices",
+    "pais": "Inglaterra",
+    "ciudad": "Gran Londres",
+    "fechaNacimiento": "1986-10-23",
+    "estatura": "1.57 m"
+  },
+  {
+    "id": "dakotajohnson",
+    "nombre": "Dakota Johnson",
+    "imagen": "personajes/dakotajohnson.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Texas",
+    "fechaNacimiento": "1989-10-04",
+    "estatura": "1.71 m"
+  },
+  {
+    "id": "emmawatson",
+    "nombre": "Emma Watson",
+    "imagen": "personajes/emmawatson.jpg",
+    "grupo": "Actrices",
+    "pais": "Francia",
+    "ciudad": "Isla de Francia",
+    "fechaNacimiento": "1990-04-15",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "amyadams",
+    "nombre": "Amy Adams",
+    "imagen": "personajes/amyadams.jpg",
+    "grupo": "Actrices",
+    "pais": "Italia",
+    "ciudad": "Véneto",
+    "fechaNacimiento": "1974-08-20",
+    "estatura": "1.63 m"
+  },
+  {
+    "id": "natalieportman",
+    "nombre": "Natalie Portman",
+    "imagen": "personajes/natalieportman.jpg",
+    "grupo": "Actrices",
+    "pais": "Israel",
+    "ciudad": "Distrito de Jerusalén",
+    "fechaNacimiento": "1981-06-09",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "penelopecruz",
+    "nombre": "Penélope Cruz",
+    "imagen": "personajes/penelopecruz.jpg",
+    "grupo": "Actrices",
+    "pais": "España",
+    "ciudad": "Comunidad de Madrid",
+    "fechaNacimiento": "1974-04-28",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "samaraweaving",
+    "nombre": "Samara Weaving",
+    "imagen": "personajes/samaraweaving.jpg",
+    "grupo": "Actrices",
+    "pais": "Australia",
+    "ciudad": "Australia Meridional",
+    "fechaNacimiento": "1992-02-23",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "loretoperalta",
+    "nombre": "Loreto Peralta",
+    "imagen": "personajes/loretoperalta.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Florida",
+    "fechaNacimiento": "2004-06-09",
+    "estatura": "1.71 m"
+  },
+  {
+    "id": "reesewitherspoon",
+    "nombre": "Reese Witherspoon",
+    "imagen": "personajes/reesewitherspoon.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Luisiana",
+    "fechaNacimiento": "1976-03-22",
+    "estatura": "1.56 m"
+  },
+  {
+    "id": "nataliedormer",
+    "nombre": "Natalie Dormer",
+    "imagen": "personajes/nataliedormer.jpg",
+    "grupo": "Actrices",
+    "pais": "Inglaterra",
+    "ciudad": "Berkshire",
+    "fechaNacimiento": "1982-02-11",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "katyperry",
+    "nombre": "Katy Perry",
+    "imagen": "personajes/katyperry.jpg",
+    "grupo": "Cantantes",
+    "pais": "Estados Unidos",
+    "ciudad": "California",
+    "fechaNacimiento": "1984-10-25",
+    "estatura": "1.70 m"
+  },
+  {
+    "id": "rihanna",
+    "nombre": "Rihanna",
+    "imagen": "personajes/rihanna.jpg",
+    "grupo": "Cantantes",
+    "pais": "Barbados",
+    "ciudad": "Saint Michael",
+    "fechaNacimiento": "1988-02-20",
+    "estatura": "1.73 m"
+  },
+  {
+    "id": "lilycollins",
+    "nombre": "Lily Collins",
+    "imagen": "personajes/lilycollins.jpg",
+    "grupo": "Actrices",
+    "pais": "Inglaterra",
+    "ciudad": "Surrey",
+    "fechaNacimiento": "1989-03-18",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "nataliadyer",
+    "nombre": "Natalia Dyer",
+    "imagen": "personajes/nataliadyer.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Tennessee",
+    "fechaNacimiento": "1995-01-13",
+    "estatura": "1.63 m"
+  },
+  {
+    "id": "katiemcgrath",
+    "nombre": "Katie McGrath",
+    "imagen": "personajes/katiemcgrath.jpg",
+    "grupo": "Actrices",
+    "pais": "Irlanda",
+    "ciudad": "Condado de Wicklow",
+    "fechaNacimiento": "1983-10-24",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "lindsaylohan",
+    "nombre": "Lindsay Lohan",
+    "imagen": "personajes/lindsaylohan.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Nueva York",
+    "fechaNacimiento": "1986-07-02",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "katherynwinnick",
+    "nombre": "Katheryn Winnick",
+    "imagen": "personajes/katherynwinnick.jpg",
+    "grupo": "Actrices",
+    "pais": "Canadá",
+    "ciudad": "Ontario",
+    "fechaNacimiento": "1977-12-17",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "elizabethgillies",
+    "nombre": "Elizabeth Gillies",
+    "imagen": "personajes/elizabethgillies.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Nueva Jersey",
+    "fechaNacimiento": "1993-07-26",
+    "estatura": "1.70 m"
+  },
+  {
+    "id": "mariapedraza",
+    "nombre": "María Pedraza",
+    "imagen": "personajes/mariapedraza.jpg",
+    "grupo": "Actrices",
+    "pais": "España",
+    "ciudad": "Comunidad de Madrid",
+    "fechaNacimiento": "1996-01-26",
+    "estatura": "1.70 m"
+  },
+  {
+    "id": "karengillan",
+    "nombre": "Karen Gillan",
+    "imagen": "personajes/karengillan.jpg",
+    "grupo": "Actrices",
+    "pais": "Escocia",
+    "ciudad": "Tierras Altas",
+    "fechaNacimiento": "1987-11-28",
+    "estatura": "1.80 m"
+  },
+  {
+    "id": "sophieskelton",
+    "nombre": "Sophie Skelton",
+    "imagen": "personajes/sophieskelton.jpg",
+    "grupo": "Actrices",
+    "pais": "Inglaterra",
+    "ciudad": "Gran Mánchester",
+    "fechaNacimiento": "1994-03-07",
+    "estatura": "1.70 m"
+  },
+  {
+    "id": "lilireinhart",
+    "nombre": "Lili Reinhart",
+    "imagen": "personajes/lilireinhart.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Ohio",
+    "fechaNacimiento": "1996-09-13",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "kristenbell",
+    "nombre": "Kristen Bell",
+    "imagen": "personajes/kristenbell.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Michigan",
+    "fechaNacimiento": "1980-07-18",
+    "estatura": "1.55 m"
+  },
+  {
+    "id": "mayahawke",
+    "nombre": "Maya Hawke",
+    "imagen": "personajes/mayahawke.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Nueva York",
+    "fechaNacimiento": "1998-07-08",
+    "estatura": "1.74 m"
+  },
+  {
+    "id": "xeniatchoumitcheva",
+    "nombre": "Xenia Tchoumitcheva",
+    "imagen": "personajes/xeniatchoumitcheva.jpg",
+    "grupo": "Modelos",
+    "pais": "Rusia",
+    "ciudad": "Óblast de Cheliábinsk",
+    "fechaNacimiento": "1989-08-05",
+    "estatura": "1.73 m"
+  },
+  {
+    "id": "barbarapalvin",
+    "nombre": "Barbara Palvin",
+    "imagen": "personajes/barbarapalvin.jpg",
+    "grupo": "Modelos",
+    "pais": "Hungría",
+    "ciudad": "Budapest",
+    "fechaNacimiento": "1993-10-08",
+    "estatura": "1.75 m"
+  },
+  {
+    "id": "marinalaswick",
+    "nombre": "Marina Laswick",
+    "imagen": "personajes/marinalaswick.jpg",
+    "grupo": "Modelos",
+    "pais": "Canadá",
+    "ciudad": "Ontario",
+    "fechaNacimiento": "1992-11-01",
+    "estatura": "1.70 m"
+  },
+  {
+    "id": "abrilguerra",
+    "nombre": "Abril Guerra",
+    "imagen": "personajes/abrilguerra.jpg",
+    "grupo": "Influencers",
+    "pais": "Venezuela",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "bellapoarch",
+    "nombre": "Bella Poarch",
+    "imagen": "personajes/bellapoarch.jpg",
+    "grupo": "Influencers",
+    "pais": "Filipinas",
+    "ciudad": "Pangasinan",
+    "fechaNacimiento": "1997-02-09",
+    "estatura": "1.55 m"
+  },
+  {
+    "id": "arigameplays",
+    "nombre": "AriGameplays",
+    "imagen": "personajes/arigameplays.jpg",
+    "grupo": "Influencers",
+    "pais": "México",
+    "ciudad": "Chihuahua",
+    "fechaNacimiento": "1998-02-28",
+    "estatura": "1.57 m"
+  },
+  {
+    "id": "lindsaymariebrewer",
+    "nombre": "Lindsay Marie Brewer",
+    "imagen": "personajes/lindsaymariebrewer.jpg",
+    "grupo": "Atletas",
+    "pais": "Estados Unidos",
+    "ciudad": "Colorado",
+    "fechaNacimiento": "1997-04-17",
+    "estatura": "1.62 m"
+  },
+  {
+    "id": "clarafernandez",
+    "nombre": "Clara Fernández",
+    "imagen": "personajes/clarafernandez.jpg",
+    "grupo": "Atletas",
+    "pais": "España",
+    "ciudad": "Cataluña",
+    "fechaNacimiento": "2003-10-22",
+    "estatura": "1.78 m"
+  },
+  {
+    "id": "tarareid",
+    "nombre": "Tara Reid",
+    "imagen": "personajes/tarareid.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Nueva Jersey",
+    "fechaNacimiento": "1975-11-08",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "rachelhurdwood",
+    "nombre": "Rachel Hurd-Wood",
+    "imagen": "personajes/rachelhurdwood.jpg",
+    "grupo": "Actrices",
+    "pais": "Inglaterra",
+    "ciudad": "Surrey",
+    "fechaNacimiento": "1990-08-17",
+    "estatura": "1.70 m"
+  },
+  {
+    "id": "willaholland",
+    "nombre": "Willa Holland",
+    "imagen": "personajes/willaholland.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "California",
+    "fechaNacimiento": "1991-06-18",
+    "estatura": "1.70 m"
+  },
+  {
+    "id": "jenniejacques",
+    "nombre": "Jennie Jacques",
+    "imagen": "personajes/jenniejacques.jpg",
+    "grupo": "Actrices",
+    "pais": "Inglaterra",
+    "ciudad": "Warwickshire",
+    "fechaNacimiento": "1988-02-28",
+    "estatura": "1.63 m"
+  },
+  {
+    "id": "victoriappedretti",
+    "nombre": "Victoria Pedretti",
+    "imagen": "personajes/victoriappedretti.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Pensilvania",
+    "fechaNacimiento": "1995-03-23",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "charlottehope",
+    "nombre": "Charlotte Hope",
+    "imagen": "personajes/charlottehope.jpg",
+    "grupo": "Actrices",
+    "pais": "Inglaterra",
+    "ciudad": "Hampshire",
+    "fechaNacimiento": "1991-10-15",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "hilaryduff",
+    "nombre": "Hilary Duff",
+    "imagen": "personajes/hilaryduff.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Texas",
+    "fechaNacimiento": "1987-09-28",
+    "estatura": "1.57 m"
+  },
+  {
+    "id": "christianserratos",
+    "nombre": "Christian Serratos",
+    "imagen": "personajes/christianserratos.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "California",
+    "fechaNacimiento": "1990-09-21",
+    "estatura": "1.70 m"
+  },
+  {
+    "id": "valentinazenere",
+    "nombre": "Valentina Zenere",
+    "imagen": "personajes/valentinazenere.jpg",
+    "grupo": "Actrices",
+    "pais": "Argentina",
+    "ciudad": "Buenos Aires",
+    "fechaNacimiento": "1997-01-15",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "roseleslie",
+    "nombre": "Rose Leslie",
+    "imagen": "personajes/roseleslie.jpg",
+    "grupo": "Actrices",
+    "pais": "Escocia",
+    "ciudad": "Aberdeenshire",
+    "fechaNacimiento": "1987-02-09",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "joeyking",
+    "nombre": "Joey King",
+    "imagen": "personajes/joeyking.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "California",
+    "fechaNacimiento": "1999-07-30",
+    "estatura": "1.63 m"
+  },
+  {
+    "id": "daisyedgarjones",
+    "nombre": "Daisy Edgar-Jones",
+    "imagen": "personajes/daisyedgarjones.jpg",
+    "grupo": "Actrices",
+    "pais": "Inglaterra",
+    "ciudad": "Gran Londres",
+    "fechaNacimiento": "1998-05-24",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "freyaallan",
+    "nombre": "Freya Allan",
+    "imagen": "personajes/freyaallan.jpg",
+    "grupo": "Actrices",
+    "pais": "Inglaterra",
+    "ciudad": "Oxfordshire",
+    "fechaNacimiento": "2001-09-06",
+    "estatura": "1.61 m"
+  },
+  {
+    "id": "madisonpettis",
+    "nombre": "Madison Pettis",
+    "imagen": "personajes/madisonpettis.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Texas",
+    "fechaNacimiento": "1998-07-22",
+    "estatura": "1.57 m"
+  },
+  {
+    "id": "dannapaola",
+    "nombre": "Danna Paola",
+    "imagen": "personajes/dannapaola.jpg",
+    "grupo": "Cantantes",
+    "pais": "México",
+    "ciudad": "Ciudad de México",
+    "fechaNacimiento": "1995-06-23",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "solrivas",
+    "nombre": "Sol Rivas",
+    "imagen": "personajes/solrivas.jpg",
+    "grupo": "Influencers",
+    "pais": "Argentina",
+    "ciudad": "San Salvador de Jujuy",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "morebeltran",
+    "nombre": "More Beltran",
+    "imagen": "personajes/morebeltran.jpg",
+    "grupo": "Influencers",
+    "pais": "Argentina",
+    "ciudad": "Haedo",
+    "fechaNacimiento": "1999-01-29",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "sofiamartinez",
+    "nombre": "Sofia Martinez",
+    "imagen": "personajes/sofiamartinez.jpg",
+    "grupo": "Influencers",
+    "pais": "Argentina",
+    "ciudad": "Buenos Aires",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "barbarapucheta",
+    "nombre": "Barbara Pucheta",
+    "imagen": "personajes/barbarapucheta.jpg",
+    "grupo": "Actrices",
+    "pais": "Argentina",
+    "ciudad": "Buenos Aires",
+    "fechaNacimiento": "1994-06-18",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "soledadfandinho",
+    "nombre": "Soledad Fandinho",
+    "imagen": "personajes/soledadfandinho.jpg",
+    "grupo": "Actrices",
+    "pais": "Argentina",
+    "ciudad": "Buenos Aires",
+    "fechaNacimiento": "1982-04-07",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "erikamidtank",
+    "nombre": "Erika MIdtank",
+    "imagen": "personajes/erikamidtank.jpg",
+    "grupo": "Modelos",
+    "pais": "Argentina",
+    "ciudad": "",
+    "fechaNacimiento": "1990-05-18",
+    "estatura": ""
+  },
+  {
+    "id": "antonellarocuzzo",
+    "nombre": "Antonella Rocuzzo",
+    "imagen": "personajes/antonellarocuzzo.jpg",
+    "grupo": "Influencers",
+    "pais": "Argentina",
+    "ciudad": "Rosario",
+    "fechaNacimiento": "1988-02-26",
+    "estatura": "1.57 m"
+  },
+  {
+    "id": "georginarodriguez",
+    "nombre": "Georgina Rodriguez",
+    "imagen": "personajes/georginarodriguez.jpg",
+    "grupo": "Modelos",
+    "pais": "Argentina",
+    "ciudad": "Buenos Aires",
+    "fechaNacimiento": "1994-01-27",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "zairanara",
+    "nombre": "Zaira Nara",
+    "imagen": "personajes/zairanara.jpg",
+    "grupo": "Modelos",
+    "pais": "Argentina",
+    "ciudad": "Boulogne Sur Mer",
+    "fechaNacimiento": "1988-08-15",
+    "estatura": "1.71 m"
+  },
+  {
+    "id": "cotyromero",
+    "nombre": "Coty Romero",
+    "imagen": "personajes/cotyromero.jpg",
+    "grupo": "Influencers",
+    "pais": "Argentina",
+    "ciudad": "Caa Catí",
+    "fechaNacimiento": "2002-04-18",
+    "estatura": ""
+  },
+  {
+    "id": "sophidiamond",
+    "nombre": "Sophi Diamond",
+    "imagen": "personajes/sophidiamond.jpg",
+    "grupo": "Influencers",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "maguiansuz",
+    "nombre": "Magui Ansuz",
+    "imagen": "personajes/maguiansuz.jpg",
+    "grupo": "Influencers",
+    "pais": "Argentina",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "brendadialoy",
+    "nombre": "Brenda Di Aloy",
+    "imagen": "personajes/brendadialoy.jpg",
+    "grupo": "Influencers",
+    "pais": "Argentina",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "arianajames",
+    "nombre": "Ariana James",
+    "imagen": "personajes/arianajames.jpg",
+    "grupo": "Modelos",
+    "pais": "Venezuela",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "kendalljenner",
+    "nombre": "Kendall Jenner",
+    "imagen": "personajes/kendalljenner.jpg",
+    "grupo": "Modelos",
+    "pais": "Estados Unidos",
+    "ciudad": "Los Ángeles",
+    "fechaNacimiento": "1995-11-03",
+    "estatura": "1.79 m"
+  },
+  {
+    "id": "silvyaosuna",
+    "nombre": "Silvya Osuna",
+    "imagen": "personajes/silvyaosuna.jpg",
+    "grupo": "Influencers",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "arielavie",
+    "nombre": "Arielavie",
+    "imagen": "personajes/arielavie.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "chechu",
+    "nombre": "Chechu",
+    "imagen": "personajes/chechu.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "jamelizbenitez",
+    "nombre": "Jameliz Benitez",
+    "imagen": "personajes/jamelizbenitez.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "neferetexposito",
+    "nombre": "Neferet Exposito",
+    "imagen": "personajes/neferetexposito.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "milipilisex420",
+    "nombre": "Milipilisex420",
+    "imagen": "personajes/milipilisex420.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "danielaescalona",
+    "nombre": "Daniela Escalona",
+    "imagen": "personajes/danielaescalona.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "bellathorne",
+    "nombre": "Bella Thorne",
+    "imagen": "personajes/bellathorne.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Pembroke Pines",
+    "fechaNacimiento": "1997-10-08",
+    "estatura": "1.73 m"
+  },
+  {
+    "id": "zendaya",
+    "nombre": "Zendaya",
+    "imagen": "personajes/zendaya.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Oakland",
+    "fechaNacimiento": "1996-09-01",
+    "estatura": "1.78 m"
+  },
+  {
+    "id": "adeleexarchopoulos",
+    "nombre": "Adèle Exarchopoulos",
+    "imagen": "personajes/adeleexarchopoulos.jpg",
+    "grupo": "Actrices",
+    "pais": "Francia",
+    "ciudad": "París",
+    "fechaNacimiento": "1993-11-22",
+    "estatura": "1.73 m"
+  },
+  {
+    "id": "klarakristin",
+    "nombre": "Klara Kristin",
+    "imagen": "personajes/klarakristin.jpg",
+    "grupo": "Actrices",
+    "pais": "Dinamarca",
+    "ciudad": "Copenhague",
+    "fechaNacimiento": "1993-01-01",
+    "estatura": ""
+  },
+  {
+    "id": "aomimuyock",
+    "nombre": "Aomi Muyock",
+    "imagen": "personajes/aomimuyock.jpg",
+    "grupo": "Actrices",
+    "pais": "Suiza",
+    "ciudad": "Cantón del Tesino",
+    "fechaNacimiento": "1989-01-14",
+    "estatura": "1.76 m"
+  },
+  {
+    "id": "saoirseronnan",
+    "nombre": "Saoirse Ronnan",
+    "imagen": "personajes/saoirseronnan.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Nueva York",
+    "fechaNacimiento": "1994-04-12",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "tuliacosta",
+    "nombre": "Tuli Acosta",
+    "imagen": "personajes/tuliacosta.jpg",
+    "grupo": "Cantantes",
+    "pais": "Argentina",
+    "ciudad": "Río Ceballos",
+    "fechaNacimiento": "2001-06-20",
+    "estatura": ""
+  },
+  {
+    "id": "lajoaqui",
+    "nombre": "La Joaqui",
+    "imagen": "personajes/lajoaqui.jpg",
+    "grupo": "Cantantes",
+    "pais": "Argentina",
+    "ciudad": "Mar del Plata",
+    "fechaNacimiento": "1994-10-24",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "camilaludingtong",
+    "nombre": "Camilla Luddington",
+    "imagen": "personajes/camilaludingtong.jpg",
+    "grupo": "Actrices",
+    "pais": "Inglaterra",
+    "ciudad": "Ascot",
+    "fechaNacimiento": "1983-12-15",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "dianaagron",
+    "nombre": "Dianna Agron",
+    "imagen": "personajes/dianaagron.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Savannah",
+    "fechaNacimiento": "1986-04-30",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "berensat",
+    "nombre": "Beren Saat",
+    "imagen": "personajes/berensat.jpg",
+    "grupo": "Actrices",
+    "pais": "Turquía",
+    "ciudad": "Ankara",
+    "fechaNacimiento": "1984-02-26",
+    "estatura": "1.67 m"
+  },
+  {
+    "id": "ryannewman",
+    "nombre": "Ryan Newman",
+    "imagen": "personajes/ryannewman.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Manhattan Beach",
+    "fechaNacimiento": "1998-04-24",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "vanessahudgens",
+    "nombre": "Vanessa Hudgens",
+    "imagen": "personajes/vanessahudgens.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Salinas",
+    "fechaNacimiento": "1988-12-14",
+    "estatura": "1.55 m"
+  },
+  {
+    "id": "alexisknapp",
+    "nombre": "Alexis Knapp",
+    "imagen": "personajes/alexisknapp.jpg",
+    "grupo": "Actrices",
+    "pais": "Estados Unidos",
+    "ciudad": "Avonmore",
+    "fechaNacimiento": "1989-07-31",
+    "estatura": "1.73 m"
+  },
+  {
+    "id": "saragadonh",
+    "nombre": "Sarah Gadon",
+    "imagen": "personajes/saragadonh.jpg",
+    "grupo": "Actrices",
+    "pais": "Canadá",
+    "ciudad": "Toronto",
+    "fechaNacimiento": "1987-04-04",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "saraislatina",
+    "nombre": "SaraisLatina",
+    "imagen": "personajes/saraislatina.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "roxyforse",
+    "nombre": "Roxyforse",
+    "imagen": "personajes/roxyforse.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "aldibernardo",
+    "nombre": "Aldi Bernardo",
+    "imagen": "personajes/aldibernardo.jpg",
+    "grupo": "NSFW",
+    "pais": "Argentina",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "sophiemargarite",
+    "nombre": "Sophie Margarite",
+    "imagen": "personajes/sophiemargarite.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "fiammisxagain",
+    "nombre": "Fiammisx Again",
+    "imagen": "personajes/fiammisxagain.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "katekuray",
+    "nombre": "Kate Kuray",
+    "imagen": "personajes/katekuray.jpg",
+    "grupo": "NSFW",
+    "pais": "Rusia",
+    "ciudad": "",
+    "fechaNacimiento": "1998-03-24",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "nbancyace",
+    "nombre": "Nancy Ace",
+    "imagen": "personajes/nbancyace.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "rachelcook",
+    "nombre": "Rachel Cook",
+    "imagen": "personajes/rachelcook.jpg",
+    "grupo": "NSFW",
+    "pais": "Estados Unidos",
+    "ciudad": "Seattle",
+    "fechaNacimiento": "1995-01-08",
+    "estatura": "1.75 m"
+  },
+  {
+    "id": "evaelfie",
+    "nombre": "Eva Elfie",
+    "imagen": "personajes/evaelfie.jpg",
+    "grupo": "NSFW",
+    "pais": "Rusia",
+    "ciudad": "Omsk",
+    "fechaNacimiento": "1997-05-27",
+    "estatura": "1.62 m"
+  },
+  {
+    "id": "sofiarodriguez",
+    "nombre": "Sofia Rodriguez",
+    "imagen": "personajes/sofiarodriguez.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "whitneywrigth",
+    "nombre": "Whitney Wright",
+    "imagen": "personajes/whitneywrigth.jpg",
+    "grupo": "NSFW",
+    "pais": "Estados Unidos",
+    "ciudad": "Oklahoma City",
+    "fechaNacimiento": "1991-09-20",
+    "estatura": "1.68 m"
+  },
+  {
+    "id": "littlemia",
+    "nombre": "Little Mia",
+    "imagen": "personajes/littlemia.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "sarahbunmilk",
+    "nombre": "Sarah Bun Milk",
+    "imagen": "personajes/sarahbunmilk.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "katyaclover",
+    "nombre": "Katya Clover",
+    "imagen": "personajes/katyaclover.jpg",
+    "grupo": "NSFW",
+    "pais": "Rusia",
+    "ciudad": "",
+    "fechaNacimiento": "1990-07-27",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "juliaburch",
+    "nombre": "Julia Burch",
+    "imagen": "personajes/juliaburch.jpg",
+    "grupo": "NSFW",
+    "pais": "Canadá",
+    "ciudad": "Ontario",
+    "fechaNacimiento": "2000-12-07",
+    "estatura": "1.60 m"
+  },
+  {
+    "id": "mariabecerra",
+    "nombre": "Maria Becerra",
+    "imagen": "personajes/mariabecerra.jpg",
+    "grupo": "Cantantes",
+    "pais": "Argentina",
+    "ciudad": "Quilmes",
+    "fechaNacimiento": "2000-02-12",
+    "estatura": "1.57 m"
+  },
+  {
+    "id": "sterrekoning",
+    "nombre": "Sterre Koning",
+    "imagen": "personajes/sterrekoning.jpg",
+    "grupo": "Cantantes",
+    "pais": "Países Bajos",
+    "ciudad": "Zutphen",
+    "fechaNacimiento": "2003-01-23",
+    "estatura": "1.74 m"
+  },
+  {
+    "id": "mackenzieporter",
+    "nombre": "Mackenzie Porter",
+    "imagen": "personajes/mackenzieporter.jpg",
+    "grupo": "Cantantes",
+    "pais": "Canadá",
+    "ciudad": "Medicine Hat",
+    "fechaNacimiento": "1990-01-29",
+    "estatura": "1.63 m"
+  },
+  {
+    "id": "nadyadoroofeeva",
+    "nombre": "Nadya Dorofeeva",
+    "imagen": "personajes/nadyadoroofeeva.jpg",
+    "grupo": "Cantantes",
+    "pais": "Ucrania",
+    "ciudad": "Simferópol",
+    "fechaNacimiento": "1990-04-21",
+    "estatura": "1.69 m"
+  },
+  {
+    "id": "mariaroberta",
+    "nombre": "Maria Roberta",
+    "imagen": "personajes/mariaroberta.jpg",
+    "grupo": "Atletas",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "alishaleman",
+    "nombre": "Alisha Lehmann",
+    "imagen": "personajes/alishaleman.jpg",
+    "grupo": "Atletas",
+    "pais": "Suiza",
+    "ciudad": "Tägertschi",
+    "fechaNacimiento": "1999-01-21",
+    "estatura": "1.65 m"
+  },
+  {
+    "id": "kellethkuthbert",
+    "nombre": "Kelleth Cuthbert",
+    "imagen": "personajes/kellethkuthbert.jpg",
+    "grupo": "Modelos",
+    "pais": "Canadá",
+    "ciudad": "Toronto",
+    "fechaNacimiento": "1987-10-23",
+    "estatura": "1.75 m"
+  },
+  {
+    "id": "victoriadallier",
+    "nombre": "Victoria Dallier",
+    "imagen": "personajes/victoriadallier.jpg",
+    "grupo": "Influencers",
+    "pais": "Argentina",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "piascarnato",
+    "nombre": "Pia Scarnato",
+    "imagen": "personajes/piascarnato.jpg",
+    "grupo": "Influencers",
+    "pais": "Argentina",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "camidalto",
+    "nombre": "Cami Dalto",
+    "imagen": "personajes/camidalto.jpg",
+    "grupo": "Influencers",
+    "pais": "Argentina",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "claricremaschi",
+    "nombre": "Clari Cremaschi",
+    "imagen": "personajes/claricremaschi.jpg",
+    "grupo": "Bailarinas",
+    "pais": "Argentina",
+    "ciudad": "Mendoza",
+    "fechaNacimiento": "2004-12-24",
+    "estatura": ""
+  },
+  {
+    "id": "bethcast",
+    "nombre": "Beth Cast",
+    "imagen": "personajes/bethcast.jpg",
+    "grupo": "Influencers",
+    "pais": "México",
+    "ciudad": "",
+    "fechaNacimiento": "2000-02-20",
+    "estatura": ""
+  },
+  {
+    "id": "alanaflores",
+    "nombre": "Alana Flores",
+    "imagen": "personajes/alanaflores.jpg",
+    "grupo": "Influencers",
+    "pais": "México",
+    "ciudad": "Monterrey",
+    "fechaNacimiento": "2000-12-15",
+    "estatura": ""
+  },
+  {
+    "id": "iara2",
+    "nombre": "Iara 2",
+    "imagen": "personajes/iara2.jpg",
+    "grupo": "Influencers",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "lourdessanchez",
+    "nombre": "Lourdes Sanchez",
+    "imagen": "personajes/lourdessanchez.jpg",
+    "grupo": "Bailarinas",
+    "pais": "Argentina",
+    "ciudad": "Corrientes",
+    "fechaNacimiento": "1986-03-05",
+    "estatura": ""
+  },
+  {
+    "id": "laurenburch",
+    "nombre": "Lauren Burch",
+    "imagen": "personajes/laurenburch.jpg",
+    "grupo": "NSFW",
+    "pais": "Canadá",
+    "ciudad": "Ontario",
+    "fechaNacimiento": "2000-12-07",
+    "estatura": "1.58 m"
+  },
+  {
+    "id": "avacherry",
+    "nombre": "Ava Cherry",
+    "imagen": "personajes/avacherry.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "sofimaure",
+    "nombre": "Sofi Maure",
+    "imagen": "personajes/sofimaure.jpg",
+    "grupo": "NSFW",
+    "pais": "Argentina",
+    "ciudad": "Mar del Plata",
+    "fechaNacimiento": "1997-07-18",
+    "estatura": ""
+  },
+  {
+    "id": "hannauwu",
+    "nombre": "Hanna Uwu",
+    "imagen": "personajes/hannauwu.jpg",
+    "grupo": "NSFW",
+    "pais": "Estados Unidos",
+    "ciudad": "",
+    "fechaNacimiento": "2002-11-21",
+    "estatura": ""
+  },
+  {
+    "id": "sofirodriguezuwu",
+    "nombre": "Sofi Rodriguez Uwu",
+    "imagen": "personajes/sofirodriguezuwu.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "lucyperez",
+    "nombre": "Lucy Perez",
+    "imagen": "personajes/lucyperez.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "lucyuwu",
+    "nombre": "Lucy UWU",
+    "imagen": "personajes/lucyuwu.jpg",
+    "grupo": "NSFW",
+    "pais": "",
+    "ciudad": "",
+    "fechaNacimiento": "",
+    "estatura": ""
+  },
+  {
+    "id": "merideal",
+    "nombre": "Meri Deal",
+    "imagen": "personajes/merideal.jpg",
+    "grupo": "Cantantes",
+    "pais": "Uruguay",
+    "ciudad": "Montevideo",
+    "fechaNacimiento": "1996-11-22",
+    "estatura": ""
+  },
+  {
+    "id": "oliviadune",
+    "nombre": "Olivia Dune",
+    "imagen": "personajes/oliviadune.jpg",
+    "grupo": "Modelos",
+    "pais": "Estados Unidos",
+    "ciudad": "Nueva Jersey",
+    "fechaNacimiento": "2002-10-01",
+    "estatura": ""
+  }
+]

@@ -1,27 +1,2276 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G2 Elite // Intergalactic Interface</title>
-    <link rel="icon" href="data:,">
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body class="text-slate-200">
-    <div id="root"></div>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Aplicación de Personajes</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --text: #ffffff;
+      --accent: #3b82f6;
+    }
 
-    <script defer src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script defer src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script defer src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script defer src="https://unpkg.com/lucide@0.469.0"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-    <script type="text/babel" src="script.js"></script>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 40px; }
+
+    /* Navegación por pestañas */
+    nav {
+      display: flex;
+      background: #18181b;
+      border-bottom: 2px solid #27272a;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 15px;
+      background: none;
+      border: none;
+      color: #a1a1aa;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .tab-btn.active {
+      color: var(--text);
+      border-bottom: 3px solid var(--accent);
+      background: #27272a;
+    }
+
+    /* Contenedor principal */
+    .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Cuadrícula de Grupos */
+   .grid-grupos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+      perspective: 1000px;
+    }
+    .card-grupo {
+      position: relative;
+      padding: 25px 15px;
+      border-radius: 16px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.03) 0px,
+        rgba(255, 255, 255, 0.03) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      box-shadow: 
+        0 10px 20px rgba(0, 0, 0, 0.6),
+        0 2px 5px rgba(0, 0, 0, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.5),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .card-grupo::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        115deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.25) 50%,
+        transparent 60%
+      );
+      transform: rotate(25deg);
+      transition: transform 0.6s ease-in-out;
+      pointer-events: none;
+    }
+    .card-grupo:hover {
+      transform: translateY(-8px) scale(1.03) rotateX(4deg);
+      box-shadow: 
+        0 18px 30px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(255, 255, 255, 0.2),
+        inset 0 1px 3px rgba(255, 255, 255, 0.8),
+        inset 0 -3px 8px rgba(0, 0, 0, 0.6);
+    }
+    .card-grupo:hover::before {
+      transform: rotate(25deg) translate(30%, 30%);
+    }
+    .card-grupo span {
+      font-size: 38px;
+      display: block;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+      transition: transform 0.3s ease;
+    }
+    .card-grupo:hover span {
+      transform: scale(1.15) translateZ(10px);
+    }
+
+    /* Tarjetas con Efectos Metalizados y Degradados 3D */
+    .cantante {
+      background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.35) 100%),
+        linear-gradient(160deg, #1e88e5 0%, #1565c0 50%, #0d47a1 100%);
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+      border-color: #64b5f6;
+    }
+    .cantante:hover {
+      box-shadow: 0 15px 30px rgba(33, 150, 243, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.8);
+    }
+
+    .actriz {
+      background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.35) 100%),
+        linear-gradient(160deg, #43a047 0%, #2e7d32 50%, #1b5e20 100%);
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+      border-color: #81c784;
+    }
+    .actriz:hover {
+      box-shadow: 0 15px 30px rgba(76, 175, 80, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.8);
+    }
+
+    .nsfw {
+      background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.35) 100%),
+        linear-gradient(160deg, #e53935 0%, #c62828 50%, #8e0000 100%);
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+      border-color: #ef5350;
+    }
+    .nsfw:hover {
+      box-shadow: 0 15px 30px rgba(244, 67, 54, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.8);
+    }
+
+    .modelo {
+      background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.35) 100%),
+        linear-gradient(160deg, #d81b60 0%, #ad1457 50%, #6a1b4d 100%);
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+      border-color: #f48fb1;
+    }
+    .modelo:hover {
+      box-shadow: 0 15px 30px rgba(233, 30, 99, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.8);
+    }
+
+    .influencer {
+      background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(0, 0, 0, 0.25) 100%),
+        linear-gradient(160deg, #fdd835 0%, #f57f17 50%, #b76e00 100%);
+      color: #111827;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+      border-color: #ffe082;
+    }
+    .influencer:hover {
+      box-shadow: 0 15px 30px rgba(255, 235, 59, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+    }
+
+    .otro {
+      background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(0, 0, 0, 0.25) 100%),
+        linear-gradient(160deg, #ffffff 0%, #cfd8dc 50%, #90a4ae 100%);
+      color: #1a1a1a;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+      border-color: #ffffff;
+    }
+    .otro:hover {
+      box-shadow: 0 15px 30px rgba(255, 255, 255, 0.4), inset 0 1px 3px rgba(255, 255, 255, 1);
+    }
+
+    .atleta {
+      background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.35) 100%),
+        linear-gradient(160deg, #fb8c00 0%, #ef6c00 50%, #e65100 100%);
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+      border-color: #ffcc80;
+    }
+    .atleta:hover {
+      box-shadow: 0 15px 30px rgba(255, 152, 0, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.8);
+    }
+
+    .bailarina {
+      background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.35) 100%),
+        linear-gradient(160deg, #8e24aa 0%, #6a1b9a 50%, #4a148c 100%);
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+      border-color: #ce93d8;
+    }
+    .bailarina:hover {
+      box-shadow: 0 15px 30px rgba(156, 39, 176, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.8);
+    }
+
+    /* Header de Vista de Personajes */
+    .header-acciones {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png'), linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), inset 0 1px 3px rgba(255, 255, 255, 0.3);
+      transition: all 0.2s ease;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    .btn:hover {
+      filter: brightness(1.15);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7), inset 0 1px 4px rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+    .btn-secundario {
+      background: linear-gradient(135deg, #6b7280 0%, #374151 100%);
+      background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png'), linear-gradient(135deg, #6b7280 0%, #374151 100%);
+    }
+
+    /* Cuadrícula de Personajes */
+    .grid-personajes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 25px;
+      padding: 15px 5px;
+    }
+    .card-personaje {
+      background: linear-gradient(135deg, #2a2a2a 0%, #161616 100%);
+      background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(135deg, #2a2a2a 0%, #161616 100%);
+      border-radius: 14px;
+      padding: 0;
+      border: 1px solid #444;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8), inset 0 2px 4px rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      aspect-ratio: 2.5 / 3.5;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    }
+    .card-personaje:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.95), inset 0 2px 6px rgba(255, 255, 255, 0.3);
+      filter: brightness(1.1);
+    }
+    .card-personaje-img {
+      width: 100%;
+      height: 72%;
+      object-fit: contain;
+      object-position: center top;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .card-personaje-content {
+      height: 90px;
+      flex-shrink: 0;
+      padding: 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(to top, rgba(10, 10, 12, 0.98), rgba(20, 20, 22, 0.8));
+      background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+      backdrop-filter: blur(8px);
+      container-type: inline-size;
+    }
+    .card-personaje h3 {
+      margin: 0 0 6px 0;
+      font-size: clamp(13px, 7.5cqi, 21px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 900;
+    }
+    .card-personaje p {
+      font-size: 13px;
+      margin: 0;
+      color: #e4e4e7;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 8px;
+      font-weight: bold;
+    }
+    /* Iluminaciones de Neón y Colores Sólidos del Título por Grupo */
+    .card-personaje.cantante h3 { color: #90caf9; text-shadow: 0 0 10px rgba(144, 202, 249, 0.8), 2px 2px 2px rgba(0,0,0,1); }
+    .card-personaje.actriz h3 { color: #a5d6a7; text-shadow: 0 0 10px rgba(165, 214, 167, 0.8), 2px 2px 2px rgba(0,0,0,1); }
+    .card-personaje.nsfw h3 { color: #ef9a9a; text-shadow: 0 0 10px rgba(239, 154, 154, 0.8), 2px 2px 2px rgba(0,0,0,1); }
+    .card-personaje.modelo h3 { color: #f48fb1; text-shadow: 0 0 10px rgba(244, 143, 177, 0.8), 2px 2px 2px rgba(0,0,0,1); }
+    .card-personaje.influencer h3 { color: #fff59d; text-shadow: 0 0 10px rgba(255, 245, 157, 0.8), 2px 2px 2px rgba(0,0,0,1); }
+    .card-personaje.atleta h3 { color: #ffcc80; text-shadow: 0 0 10px rgba(255, 204, 128, 0.8), 2px 2px 2px rgba(0,0,0,1); }
+    .card-personaje.bailarina h3 { color: #ce93d8; text-shadow: 0 0 10px rgba(206, 147, 216, 0.8), 2px 2px 2px rgba(0,0,0,1); }
+    .card-personaje.otro h3 { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 2px 2px 2px rgba(0,0,0,1); }
+
+    /* Modales */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+    }
+    .modal-content {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 450px;
+    }
+    .modal-content h2 { margin-bottom: 15px; }
+    .modal-content label { display: block; margin-top: 10px; font-size: 14px; }
+    .modal-content input, .modal-content select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background: #121212;
+      color: white;
+    }
+    .modal-acciones { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+    .modal-perfil {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 250;
+    }
+    .modal-perfil-content {
+      background: var(--card-bg);
+      padding: 0;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 700px;
+      display: flex;
+      overflow: hidden;
+      position: relative;
+    }
+    .btn-cerrar-perfil {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .perfil-left {
+      flex: 1;
+      background: #121212;
+      padding: 30px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .perfil-left h2 {
+      font-size: 32px;
+      color: var(--accent);
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .perfil-left img {
+      width: 100%;
+      max-width: 250px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      object-fit: cover;
+    }
+    .perfil-right {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .perfil-right .badge-grupo {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 15px;
+      align-self: flex-start;
+    }
+    .perfil-right p {
+      font-size: 16px;
+      margin: 8px 0;
+      color: #e4e4e7;
+    }
+    .perfil-right p strong {
+      color: #a1a1aa;
+    }
+    .btn-ir-galeria {
+      margin-top: 25px;
+      padding: 12px;
+      font-size: 16px;
+      background: #8b5cf6;
+      width: 100%;
+    }
+    /* Contenedor de Galería Multimedia */
+    .pantalla-personaje {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-color: var(--bg);
+      z-index: 300;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .pantalla-personaje-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      gap: 20px;
+    }
+    .pantalla-personaje-titulo {
+      font-size: 32px;
+      color: var(--accent);
+      margin: 0;
+    }
+    .galeria-full-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    .galeria-full-grid img {
+      width: 100%;
+      height: 250px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-color: rgba(0, 0, 0, 0.95);
+      z-index: 500;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .lightbox-modal.active {
+      display: flex;
+    }
+    .lightbox-header {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 510;
+    }
+    .lightbox-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    .lightbox-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+    .lightbox-btn-play.playing {
+      background: #22c55e;
+    }
+    .lightbox-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      font-size: 30px;
+      padding: 15px 20px;
+      cursor: pointer;
+      border-radius: 8px;
+      user-select: none;
+      z-index: 510;
+      transition: background 0.2s;
+    }
+    .lightbox-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+    .lightbox-visor {
+      max-width: 90vw;
+      max-height: 85vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .lightbox-visor img, .lightbox-visor video, .lightbox-visor iframe {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 8px;
+      border: none;
+    }
+
+    /* --- ESTILOS DE ETIQUETAS MULTIMEDIA --- */
+    .media-container {
+      position: relative;
+      display: flex;
+      width: 100%;
+    }
+    .media-tag {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      width: 26px;
+      height: 26px;
+      border-radius: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 900;
+      font-size: 14px;
+      color: white;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), inset 0 -2px 4px rgba(0,0,0,0.5), 0 3px 5px rgba(0,0,0,0.8);
+      border: 1px solid rgba(0,0,0,0.6);
+      text-shadow: 1px 1px 2px black, 0 0 5px rgba(255,255,255,0.4);
+      background-image: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 40%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.5) 100%);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .media-tag:hover {
+      transform: scale(1.15) translateY(-2px);
+    }
+    .tag-C { background-color: #64748b; }
+    .tag-P { background-color: #d97706; }
+    .tag-B { background-color: #2563eb; }
+    .tag-S { background-color: #db2777; }
+    .tag-E { background-color: #16a34a; }
+    .tag-X { background-color: #dc2626; }
+    
+    .filtros-panel {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+    }
+    .filtro-grupo {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .filtro-grupo label {
+      font-size: 14px;
+      color: #a1a1aa;
+      font-weight: bold;
+    }
+    .filtro-grupo select, .filtro-grupo input {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #3f3f46;
+      background: #27272a;
+      color: white;
+      font-size: 14px;
+    }
+    .filtro-opciones-radio {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .filtro-opciones-radio label {
+      color: white;
+      font-weight: normal;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .etiquetas-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .chk-tag {
+      display: none;
+    }
+    .chk-tag-label {
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid #52525b;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    .chk-tag:checked + .chk-tag-label {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+    .acciones-playlist {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 15px;
+      border-top: 1px solid #27272a;
+      margin-top: 10px;
+    }
+    .botones-reproduccion {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-play { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); }
+    .btn-random { background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%); }
+
+    /* --- ESTILOS ÁREA DE BATALLAS --- */
+    .sector-selector {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .btn-sector {
+      padding: 10px 24px;
+      border-radius: 10px;
+      border: 1px solid #3f3f46;
+      background: #18181b;
+      color: #a1a1aa;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-sector.active {
+      background: var(--accent);
+      color: white;
+      border-color: #60a5fa;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+    }
+    .batalla-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+    }
+    .arena-container {
+      display: flex;
+      gap: 20px;
+      align-items: stretch;
+      flex-wrap: wrap;
+    }
+    .esquina {
+      flex: 1;
+      min-width: 300px;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      background: #18181b;
+      border: 2px solid #27272a;
+      position: relative;
+    }
+    .esquina-roja {
+      border-color: #ef4444;
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.1) 0%, rgba(24, 24, 27, 0.95) 100%);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+    }
+    .esquina-azul {
+      border-color: #3b82f6;
+      background: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, rgba(24, 24, 27, 0.95) 100%);
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    }
+    .esquina-titulo {
+      font-size: 20px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    .esquina-roja .esquina-titulo { color: #fca5a5; }
+    .esquina-azul .esquina-titulo { color: #93c5fd; }
+    
+    .media-box-batalla {
+      width: 100%;
+      height: 380px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .media-box-batalla img, .media-box-batalla iframe, .media-box-batalla video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border: none;
+    }
+    .controles-batalla {
+      display: flex;
+      gap: 12px;
+      margin-top: 15px;
+      width: 100%;
+      justify-content: center;
+    }
+    .btn-batalla {
+      padding: 10px 20px;
+      font-size: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: transform 0.2s, filter 0.2s;
+    }
+    .btn-batalla:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
+    }
+    .btn-siguiente-media { background: #475569; color: white; }
+    .btn-trofeo { background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color: white; }
+
+    .stats-batalla {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #a1a1aa;
+      font-weight: bold;
+      text-align: center;
+      background: rgba(0,0,0,0.4);
+      padding: 8px 14px;
+      border-radius: 8px;
+      width: 100%;
+    }
+    .vs-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      color: #ef4444;
+      text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+      padding: 10px;
+    }
+
+    /* --- ESTILOS RANKING --- */
+    .ranking-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+    .btn-ranking {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1px solid #3f3f46;
+      background: #18181b;
+      color: #a1a1aa;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-ranking.active {
+      background: var(--accent);
+      color: white;
+      border-color: #60a5fa;
+    }
+    .table-container {
+      overflow-x: auto;
+      background: #18181b;
+      border-radius: 8px;
+      border: 1px solid #27272a;
+    }
+    .ranking-table {
+      width: 100%;
+      border-collapse: collapse;
+      color: white;
+      font-size: 14px;
+    }
+    .ranking-table th, .ranking-table td {
+      border-bottom: 1px solid #27272a;
+      padding: 12px 15px;
+      text-align: left;
+    }
+    .ranking-table th {
+      background: #27272a;
+      font-weight: 900;
+      color: #a1a1aa;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .ranking-table th:hover {
+      background: #3f3f46;
+    }
+    .ranking-table tr:hover:not(.coronado) {
+      background: #27272a;
+    }
+    .col-derecha { text-align: right !important; }
+    .col-centro { text-align: center !important; }
+    .coronado {
+      background: linear-gradient(90deg, rgba(212,175,55,0.15) 0%, rgba(212,175,55,0.4) 50%, rgba(212,175,55,0.15) 100%);
+      font-weight: bold;
+      box-shadow: inset 0 0 10px rgba(212,175,55,0.5);
+    }
+    .coronado td {
+      color: #ffd700;
+      border-bottom: 1px solid #d4af37;
+    }
+    .coronado-icon {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+    .thumb-rank {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      vertical-align: middle;
+      margin-right: 15px;
+      border: 2px solid #3f3f46;
+    }
+    .coronado .thumb-rank {
+      border-color: #ffd700;
+      box-shadow: 0 0 10px rgba(212,175,55,0.8);
+    }
+    .nombre-col {
+      display: flex;
+      align-items: center;
+    }
+    /* Estilos para el slider dual y exacto */
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 30px;
+      margin-top: 5px;
+    }
+    .slider-track {
+      position: absolute;
+      width: 100%;
+      height: 6px;
+      background: #3f3f46;
+      border-radius: 3px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+    .slider-dual {
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      pointer-events: none;
+      -webkit-appearance: none;
+      z-index: 2;
+    }
+    .slider-dual::-webkit-slider-thumb {
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      pointer-events: auto;
+      -webkit-appearance: none;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+    .slider-dual::-moz-range-thumb {
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      pointer-events: auto;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      border: none;
+    }
+    .slider-exacto {
+      width: 100%;
+      height: 6px;
+      background: #3f3f46;
+      border-radius: 3px;
+      outline: none;
+      -webkit-appearance: none;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .slider-exacto::-webkit-slider-thumb {
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #ef4444; 
+      -webkit-appearance: none;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+    .slider-exacto::-moz-range-thumb {
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #ef4444;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <button class="tab-btn active" onclick="cambiarPestana('personajes')">Personajes</button>
+    <button class="tab-btn" onclick="cambiarPestana('galeria')">Galería</button>
+    <button class="tab-btn" onclick="cambiarPestana('batalla')">Batalla</button>
+    <button class="tab-btn" onclick="cambiarPestana('ranking')">Ranking</button>
+  </nav>
+
+  <div class="container">
+    <div id="tab-personajes" class="tab-content active">
+      
+      <div id="vista-grupos">
+        <h2>Selecciona un Grupo</h2>
+        <div class="grid-grupos">
+          <div class="card-grupo cantante" onclick="abrirGrupo('Cantantes')"><span>🎤</span>Cantantes</div>
+          <div class="card-grupo actriz" onclick="abrirGrupo('Actrices')"><span>🎭</span>Actrices</div>
+          <div class="card-grupo nsfw" onclick="abrirGrupo('NSFW')"><span>🔞</span>NSFW</div>
+          <div class="card-grupo modelo" onclick="abrirGrupo('Modelos')"><span>📸</span>Modelos</div>
+          <div class="card-grupo influencer" onclick="abrirGrupo('Influencers')"><span>⭐</span>Influencer</div>
+          <div class="card-grupo otro" onclick="abrirGrupo('Otros')"><span>❓</span>Otros</div>
+          <div class="card-grupo atleta" onclick="abrirGrupo('Atletas')"><span>🏆</span>Atleta</div>
+          <div class="card-grupo bailarina" onclick="abrirGrupo('Bailarinas')"><span>💃</span>Bailarina</div>
+        </div>
+      </div>
+
+      <div id="vista-personajes-grupo" style="display: none;">
+        <div class="header-acciones">
+          <button class="btn btn-secundario" onclick="volverAGrupos()">← Volver a Grupos</button>
+          <h2 id="titulo-grupo">Grupo</h2>
+          <button class="btn" onclick="abrirModalNuevoPersonaje()">+ Nuevo Personaje</button>
+        </div>
+        <div id="contenedor-personajes" class="grid-personajes"></div>
+      </div>
+
+    </div>
+
+    <div id="tab-galeria" class="tab-content">
+      <h2>Filtros de Reproducción</h2>
+      
+      <div class="filtros-panel">
+        <div class="filtro-grupo">
+          <label>Personaje:</label>
+          <select id="filtro-personaje"><option value="todos">Todos</option></select>
+        </div>
+
+        <div class="filtro-grupo">
+          <label>Grupo:</label>
+          <select id="filtro-grupo-sel"><option value="todos">Todos</option></select>
+        </div>
+
+        <div class="filtro-grupo">
+          <label>Nacionalidad:</label>
+          <select id="filtro-pais"><option value="todos">Todas</option></select>
+          <div class="filtro-opciones-radio">
+            <label><input type="radio" name="pais-condicion" value="incluir" checked> Solo estos</label>
+            <label><input type="radio" name="pais-condicion" value="excluir"> Todos menos este</label>
+          </div>
+        </div>
+
+        <div class="filtro-grupo">
+          <label>Etiquetas:</label>
+          <div class="etiquetas-checkboxes">
+            <input type="checkbox" id="chk-C" class="chk-tag" value="C"><label for="chk-C" class="chk-tag-label">C</label>
+            <input type="checkbox" id="chk-P" class="chk-tag" value="P"><label for="chk-P" class="chk-tag-label">P</label>
+            <input type="checkbox" id="chk-B" class="chk-tag" value="B"><label for="chk-B" class="chk-tag-label">B</label>
+            <input type="checkbox" id="chk-S" class="chk-tag" value="S"><label for="chk-S" class="chk-tag-label">S</label>
+            <input type="checkbox" id="chk-E" class="chk-tag" value="E"><label for="chk-E" class="chk-tag-label">E</label>
+            <input type="checkbox" id="chk-X" class="chk-tag" value="X"><label for="chk-X" class="chk-tag-label">X</label>
+          </div>
+          <div class="filtro-opciones-radio">
+            <label><input type="radio" name="etiqueta-condicion" value="incluir" checked> Solo seleccionadas</label>
+            <label><input type="radio" name="etiqueta-condicion" value="excluir"> Todas menos estas</label>
+          </div>
+        </div>
+
+        <div class="acciones-playlist">
+          <span id="resultados-conteo" style="color: #a1a1aa; font-weight: bold;">Resultados: 0 archivos</span>
+          <div class="botones-reproduccion">
+            <button class="btn btn-secundario" onclick="generarPlaylist()">Aplicar Filtros</button>
+            <button class="btn btn-play" onclick="reproducirPlaylist(false)">▶ Reproducir Ordenado</button>
+            <button class="btn btn-random" onclick="reproducirPlaylist(true)">🔀 Reproducir Aleatorio</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="contenedor-playlist" class="galeria-full-grid"></div>
+    </div>
+
+    <div id="tab-batalla" class="tab-content">
+      <div class="sector-selector">
+        <button class="btn-sector active" data-sector="C" onclick="cambiarSectorBatalla('C')">Sector C</button>
+        <button class="btn-sector" data-sector="B" onclick="cambiarSectorBatalla('B')">Sector B</button>
+        <button class="btn-sector" data-sector="P" onclick="cambiarSectorBatalla('P')">Sector P</button>
+        <button class="btn-sector" data-sector="R" onclick="cambiarSectorBatalla('R')">Sector R</button>
+      </div>
+
+      <div class="filtros-panel" style="margin-bottom: 20px;">
+        <div class="filtro-grupo">
+          <label>Modo de Batalla:</label>
+          <select id="batalla-modo" onchange="actualizarOpcionesBatalla()">
+            <option value="general">General (Todas)</option>
+            <option value="nacionalidad">Misma Nacionalidad</option>
+            <option value="grupo">Mismo Grupo</option>
+            <option value="rango_edad">Mismo Rango de Edad</option>
+          </select>
+        </div>
+        <div class="filtro-grupo" id="batalla-filtro-extra" style="display:none;">
+          <label id="batalla-label-extra">Seleccionar:</label>
+          <select id="batalla-valor-extra" onchange="iniciarEnfrentamiento()">
+          </select>
+        </div>
+      </div>
+
+      <div class="batalla-header">
+        <button id="btn-guardar-batallas" class="btn" style="display: none;" onclick="guardarBatallasJSON()">💾 Guardar proceso</button>
+      </div>
+
+      <div class="arena-container">
+        <div class="esquina esquina-roja" id="esquina-roja">
+          <div class="esquina-titulo" id="roja-nombre">Participante A</div>
+          <div class="media-box-batalla" id="roja-media-box"></div>
+          <div class="controles-batalla">
+            <button class="btn-batalla btn-siguiente-media" id="roja-btn-flecha" onclick="siguienteMultimediaBatalla('roja')">➡</button>
+            <button class="btn-batalla btn-trofeo" title="Declarar Ganador" onclick="registrarGanador('roja')">🏆</button>
+          </div>
+          <div class="stats-batalla" id="roja-stats">Batallas libradas: 0 | Ganadas: 0</div>
+        </div>
+
+        <div class="vs-divider">VS</div>
+
+        <div class="esquina esquina-azul" id="esquina-azul">
+          <div class="esquina-titulo" id="azul-nombre">Participante B</div>
+          <div class="media-box-batalla" id="azul-media-box"></div>
+          <div class="controles-batalla">
+            <button class="btn-batalla btn-siguiente-media" id="azul-btn-flecha" onclick="siguienteMultimediaBatalla('azul')">➡</button>
+            <button class="btn-batalla btn-trofeo" title="Declarar Ganador" onclick="registrarGanador('azul')">🏆</button>
+          </div>
+          <div class="stats-batalla" id="azul-stats">Batallas libradas: 0 | Ganadas: 0</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-ranking" class="tab-content">
+      <div class="ranking-nav">
+        <button class="btn-ranking active" onclick="cambiarRanking('C')">Etiqueta C</button>
+        <button class="btn-ranking" onclick="cambiarRanking('B')">Etiqueta B</button>
+        <button class="btn-ranking" onclick="cambiarRanking('P')">Etiqueta P</button>
+        <button class="btn-ranking" onclick="cambiarRanking('R')">Etiqueta R</button>
+        <button class="btn-ranking" onclick="cambiarRanking('GENERAL')">General (Promedio)</button>
+      </div>
+
+      <div class="filtros-panel" style="margin-bottom: 20px;">
+        <div class="filtro-grupo">
+          <label>Grupo:</label>
+          <select id="ranking-filtro-grupo" onchange="cambiarRanking(rankingActual)">
+            <option value="todos">Todos</option>
+          </select>
+        </div>
+        <div class="filtro-grupo">
+          <label>Nacionalidad:</label>
+          <select id="ranking-filtro-pais" onchange="cambiarRanking(rankingActual)">
+            <option value="todos">Todas</option>
+          </select>
+        </div>
+        <div class="filtro-grupo">
+          <!-- Modo Rango (Dos selectores independientes) -->
+          <div id="contenedor-rango">
+            <label style="display:block; margin-bottom:5px;">Edad Mínima: <span id="lbl-edad-min">18</span> años</label>
+            <input type="range" id="ranking-filtro-edad-min" min="18" max="60" value="18" style="width:100%; margin-bottom:15px; cursor:pointer;" oninput="validarRangoEdad('min')" onchange="cambiarRanking(rankingActual)">
+            
+            <label style="display:block; margin-bottom:5px;">Edad Máxima: <span id="lbl-edad-max">60</span> años</label>
+            <input type="range" id="ranking-filtro-edad-max" min="18" max="60" value="60" style="width:100%; cursor:pointer;" oninput="validarRangoEdad('max')" onchange="cambiarRanking(rankingActual)">
+          </div>
+          
+          <!-- Modo Exacto (Un selector) -->
+          <div id="contenedor-exacta" style="display:none;">
+            <label style="display:block; margin-bottom:5px;">Edad Exacta: <span id="lbl-edad-exacta">25</span> años</label>
+            <input type="range" id="ranking-filtro-edad-exacta" min="18" max="60" value="25" style="width:100%; cursor:pointer;" oninput="document.getElementById('lbl-edad-exacta').innerText = this.value" onchange="cambiarRanking(rankingActual)">
+          </div>
+
+          <div style="margin-top:15px;">
+            <label style="color:white; font-weight:normal; cursor:pointer;">
+              <input type="checkbox" id="ranking-edad-exacta" onchange="toggleModoEdad(); cambiarRanking(rankingActual)"> Solo esta edad exacta
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container" id="ranking-table-container"></div>
+    </div>
+  </div>
+
+  <div id="modal-nuevo" class="modal">
+    <div class="modal-content">
+      <h2>Nuevo Personaje</h2>
+      <form id="form-nuevo-personaje">
+        <label>Nombre:</label>
+        <input type="text" id="p-nombre" required>
+
+        <label>Grupo:</label>
+        <select id="p-grupo" required>
+          <option value="Cantantes">Cantantes</option>
+          <option value="Actrices">Actrices</option>
+          <option value="NSFW">NSFW</option>
+          <option value="Modelos">Modelos</option>
+          <option value="Influencer">Influencer</option>
+          <option value="Otros">Otros</option>
+          <option value="Atletas">Atletas</option>
+          <option value="Bailarinas">Bailarinas</option>
+        </select>
+
+        <label>País:</label>
+        <input type="text" id="p-pais" required>
+
+        <label>Ciudad de nacimiento:</label>
+        <input type="text" id="p-ciudad" required>
+
+        <label>Fecha de nacimiento:</label>
+        <input type="date" id="p-fecha" onchange="calcularEdadModal()" required>
+        <p id="p-edad-resultado" style="font-size: 12px; color: #a1a1aa; margin-top: 3px;">Edad: -</p>
+
+        <label>Estatura (cm / m):</label>
+        <input type="text" id="p-estatura" placeholder="Ej: 1.70 m" required>
+
+        <div class="modal-acciones">
+          <button type="button" class="btn btn-secundario" onclick="cerrarModalNuevo()">Cancelar</button>
+          <button type="submit" class="btn">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-perfil" class="modal-perfil">
+    <div class="modal-perfil-content">
+      <button class="btn-cerrar-perfil" onclick="cerrarPerfilPersonaje()">✕</button>
+      <div class="perfil-left">
+        <h2 id="perfil-nombre">Nombre</h2>
+        <img id="perfil-img" src="" alt="Foto del personaje" onerror="this.src='https://via.placeholder.com/250x350?text=Sin+Imagen'">
+      </div>
+      <div class="perfil-right">
+        <span id="perfil-grupo" class="badge-grupo">Grupo</span>
+        <p><strong>Nacionalidad:</strong> <span id="perfil-pais"></span></p>
+        <p><strong>Ciudad:</strong> <span id="perfil-ciudad"></span></p>
+        <p><strong>Nacimiento:</strong> <span id="perfil-fecha"></span></p>
+        <p><strong>Edad:</strong> <span id="perfil-edad"></span> años</p>
+        <p><strong>Estatura:</strong> <span id="perfil-estatura"></span></p>
+        
+        <button id="perfil-btn-galeria" class="btn btn-ir-galeria">Galería</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="pantalla-personaje" class="pantalla-personaje">
+    <div class="pantalla-personaje-header">
+      <button class="btn btn-secundario" onclick="cerrarPantallaPersonaje()">← Volver</button>
+      <h2 id="pantalla-titulo-personaje" class="pantalla-personaje-titulo"></h2>
+      <button class="btn" onclick="descargarJSONActializado('multimedia.json', multimediaData)">Guardar cambios</button>
+    </div>
+    <div id="pantalla-contenido-personaje" class="galeria-full-grid"></div>
+  </div>
+
+  <div id="modal-lightbox" class="lightbox-modal">
+    <div class="lightbox-header">
+      <button id="btn-lightbox-play" class="lightbox-btn" onclick="toggleAutoplay()">▶ Play</button>
+      <button class="lightbox-btn" onclick="cerrarLightbox()">✕ Cerrar</button>
+    </div>
+    <button class="lightbox-nav-btn lightbox-prev" onclick="navegarLightbox(-1)">❮</button>
+    <button class="lightbox-nav-btn lightbox-next" onclick="navegarLightbox(1)">❯</button>
+    <div id="lightbox-visor" class="lightbox-visor"></div>
+  </div>
+
+  <script>
+    let personajesData = [];
+    let multimediaData = [];
+    let batallasData = [];
+    let grupoActual = "";
+
+    // Estado para el sistema de Batallas
+    let sectorBatallaActual = 'C';
+    let participanteRojo = { id: null, mediaIndex: 0 };
+    let participanteAzul = { id: null, mediaIndex: 0 };
+
+    // Cargar los archivos JSON al iniciar
+    async function cargarDatos() {
+      try {
+        const resP = await fetch('personajes.json');
+        personajesData = await resP.json();
+        
+        const resM = await fetch('multimedia.json');
+        multimediaData = await resM.json();
+        
+        multimediaData.forEach(m => {
+          if (!m.etiqueta) m.etiqueta = 'C';
+        });
+
+        // Intentar cargar batallas.json guardado
+        try {
+          const resB = await fetch('batallas.json');
+          if (resB.ok) {
+            batallasData = await resB.json();
+            if (batallasData.length > 0) {
+              document.getElementById('btn-guardar-batallas').style.display = 'inline-block';
+            }
+          }
+        } catch (e) {
+          console.warn("No se encontró batallas.json previo.");
+        }
+      } catch (err) {
+        console.warn("No se pudieron cargar los archivos JSON localmente (Asegúrate de usarlos mediante un servidor web local). Se usará memoria local.");
+      }
+    }
+    cargarDatos();
+
+    // Navegación entre pestañas principales
+    function cambiarPestana(id) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById('tab-' + id).classList.add('active');
+
+      if (id === 'galeria') {
+        inicializarFiltrosGaleria();
+      } else if (id === 'batalla') {
+        actualizarOpcionesBatalla();
+        iniciarEnfrentamiento();
+      } else if (id === 'ranking') {
+        inicializarFiltrosRanking();
+        iniciarRanking();
+      }
+    }
+
+    // Navegación dentro de Personajes
+    function abrirGrupo(nombreGrupo) {
+      grupoActual = nombreGrupo;
+      document.getElementById('vista-grupos').style.display = 'none';
+      document.getElementById('vista-personajes-grupo').style.display = 'block';
+      document.getElementById('titulo-grupo').innerText = "Grupo: " + nombreGrupo;
+      renderizarPersonajes();
+    }
+
+    function volverAGrupos() {
+      document.getElementById('vista-grupos').style.display = 'block';
+      document.getElementById('vista-personajes-grupo').style.display = 'none';
+    }
+
+    // Calcular Edad automáticamente
+    function calcularEdad(fechaNacimiento) {
+      const hoy = new Date();
+      const nac = new Date(fechaNacimiento);
+      let edad = hoy.getFullYear() - nac.getFullYear();
+      const m = hoy.getMonth() - nac.getMonth();
+      if (m < 0 || (m === 0 && hoy.getDate() < nac.getDate())) {
+        edad--;
+      }
+      return edad;
+    }
+
+    function calcularEdadModal() {
+      const fechaVal = document.getElementById('p-fecha').value;
+      if (fechaVal) {
+        const edad = calcularEdad(fechaVal);
+        document.getElementById('p-edad-resultado').innerText = `Edad calculada: ${edad} años`;
+      }
+    }
+
+    // Renderizar lista de personajes
+    function renderizarPersonajes() {
+      const cont = document.getElementById('contenedor-personajes');
+      cont.innerHTML = "";
+
+      const filtrados = personajesData.filter(p => p.grupo === grupoActual);
+
+      if (filtrados.length === 0) {
+        cont.innerHTML = "<p>No hay personajes en este grupo.</p>";
+        return;
+      }
+
+      filtrados.forEach(p => {
+        const edad = calcularEdad(p.fechaNacimiento);
+        const card = document.createElement('div');
+        
+        let claseGrupo = 'otro';
+        const grupoNormalizado = p.grupo.toLowerCase();
+        if(grupoNormalizado.includes('cantante')) claseGrupo = 'cantante';
+        else if(grupoNormalizado.includes('actri')) claseGrupo = 'actriz';
+        else if(grupoNormalizado.includes('nsfw')) claseGrupo = 'nsfw';
+        else if(grupoNormalizado.includes('modelo')) claseGrupo = 'modelo';
+        else if(grupoNormalizado.includes('influencer')) claseGrupo = 'influencer';
+        else if(grupoNormalizado.includes('atleta')) claseGrupo = 'atleta';
+        else if(grupoNormalizado.includes('bailarina')) claseGrupo = 'bailarina';
+
+        card.className = `card-personaje ${claseGrupo}`;
+        card.style.cursor = 'pointer';
+        card.onclick = () => abrirPerfilPersonaje(p.id);
+        card.innerHTML = `
+          <img class="card-personaje-img" src="personajes/${p.id}.jpg" onerror="this.src='https://via.placeholder.com/250x350?text=Sin+Imagen'" alt="Foto de ${p.nombre}">
+          <div class="card-personaje-content">
+            <h3>${p.nombre}</h3>
+            <p><span>${edad} años</span> <span>${p.pais}</span></p>
+          </div>
+        `;
+        cont.appendChild(card);
+      });
+    }
+
+    // Modal Formulario
+    function abrirModalNuevoPersonaje() {
+      document.getElementById('p-grupo').value = grupoActual;
+      document.getElementById('modal-nuevo').style.display = 'flex';
+    }
+    function cerrarModalNuevo() {
+      document.getElementById('modal-nuevo').style.display = 'none';
+    }
+
+    document.getElementById('form-nuevo-personaje').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nuevo = {
+        id: Date.now().toString(),
+        nombre: document.getElementById('p-nombre').value,
+        grupo: document.getElementById('p-grupo').value,
+        pais: document.getElementById('p-pais').value,
+        ciudad: document.getElementById('p-ciudad').value,
+        fechaNacimiento: document.getElementById('p-fecha').value,
+        estatura: document.getElementById('p-estatura').value
+      };
+
+      personajesData.push(nuevo);
+      cerrarModalNuevo();
+      document.getElementById('form-nuevo-personaje').reset();
+      
+      if (nuevo.grupo === grupoActual) renderizarPersonajes();
+    });
+
+    function abrirPerfilPersonaje(id) {
+      const p = personajesData.find(x => x.id === id);
+      if(!p) return;
+      
+      const edad = calcularEdad(p.fechaNacimiento);
+      
+      document.getElementById('perfil-nombre').innerText = p.nombre;
+      document.getElementById('perfil-img').src = `personajes/${p.id}.jpg`;
+      
+      const badge = document.getElementById('perfil-grupo');
+      badge.innerText = p.grupo;
+      
+      badge.className = 'badge-grupo'; 
+      const grupoNormalizado = p.grupo.toLowerCase();
+      if(grupoNormalizado.includes('cantante')) badge.classList.add('cantante');
+      else if(grupoNormalizado.includes('actri')) badge.classList.add('actriz');
+      else if(grupoNormalizado.includes('nsfw')) badge.classList.add('nsfw');
+      else if(grupoNormalizado.includes('modelo')) badge.classList.add('modelo');
+      else if(grupoNormalizado.includes('influencer')) badge.classList.add('influencer');
+      else if(grupoNormalizado.includes('atleta')) badge.classList.add('atleta');
+      else if(grupoNormalizado.includes('bailarina')) badge.classList.add('bailarina');
+      else badge.classList.add('otro');
+
+      document.getElementById('perfil-pais').innerText = p.pais;
+      document.getElementById('perfil-ciudad').innerText = p.ciudad;
+      document.getElementById('perfil-fecha').innerText = p.fechaNacimiento;
+      document.getElementById('perfil-edad').innerText = edad;
+      document.getElementById('perfil-estatura').innerText = p.estatura;
+      
+      const btnGaleria = document.getElementById('perfil-btn-galeria');
+      btnGaleria.onclick = () => {
+        cerrarPerfilPersonaje();
+        verGaleriaPersonaje(p.id, p.nombre);
+      };
+
+      document.getElementById('modal-perfil').style.display = 'flex';
+    }
+
+    function cerrarPerfilPersonaje() {
+      document.getElementById('modal-perfil').style.display = 'none';
+    }
+
+    let galeriaActualItems = [];
+    let lightboxIndex = 0;
+    let reproduciendoAuto = false;
+    let timerAuto = null;
+
+    function verGaleriaPersonaje(id, nombre) {
+      document.getElementById('pantalla-titulo-personaje').innerText = nombre;
+      const cont = document.getElementById('pantalla-contenido-personaje');
+      cont.innerHTML = "";
+
+      galeriaActualItems = multimediaData.filter(m => m.personajeId === id);
+
+      if (galeriaActualItems.length === 0) {
+        cont.innerHTML = "<p>No hay archivos multimedia registrados.</p>";
+      } else {
+        let index = 0;
+        
+        function cargarSiguienteMultimedia() {
+          if (index >= galeriaActualItems.length) return;
+          const currentIdx = index;
+          const item = galeriaActualItems[index];
+          index++;
+
+          const mediaWrapper = document.createElement('div');
+          mediaWrapper.className = 'media-container';
+
+          const tag = document.createElement('div');
+          tag.className = `media-tag tag-${item.etiqueta || 'C'}`;
+          tag.innerText = item.etiqueta || 'C';
+          tag.onclick = (e) => {
+            e.stopPropagation();
+            cambiarEtiquetaMultimedia(item, tag);
+          };
+
+          if (item.tipo === "video") {
+            const fileId = item.url.split('/d/')[1]?.split('/')[0] || item.url;
+            
+            const videoContainer = document.createElement('div');
+            videoContainer.style.width = "100%";
+            videoContainer.style.display = "flex";
+            videoContainer.style.flexDirection = "column";
+            videoContainer.style.gap = "8px";
+            videoContainer.style.cursor = "pointer";
+
+            const iframe = document.createElement('iframe');
+            iframe.style.width = "100%";
+            iframe.style.height = "250px";
+            iframe.style.border = "none";
+            iframe.style.pointerEvents = "none";
+            iframe.allow = "autoplay; fullscreen";
+            iframe.setAttribute("allowfullscreen", "true");
+
+            videoContainer.onclick = () => abrirLightbox(currentIdx);
+
+            videoContainer.appendChild(iframe);
+            mediaWrapper.appendChild(videoContainer);
+            mediaWrapper.appendChild(tag);
+            cont.appendChild(mediaWrapper);
+
+            iframe.onload = () => cargarSiguienteMultimedia();
+            iframe.src = `https://drive.google.com/file/d/${fileId}/preview`;
+          } else {
+            const img = document.createElement('img');
+            img.src = item.url;
+            img.style.cursor = "pointer";
+            img.onclick = () => abrirLightbox(currentIdx);
+            
+            mediaWrapper.appendChild(img);
+            mediaWrapper.appendChild(tag);
+            cont.appendChild(mediaWrapper);
+            
+            cargarSiguienteMultimedia();
+          }
+        }
+        
+        cargarSiguienteMultimedia();
+      }
+
+      document.getElementById('pantalla-personaje').style.display = 'block';
+    }
+
+    function cerrarPantallaPersonaje() {
+      cerrarLightbox();
+      document.getElementById('pantalla-personaje').style.display = 'none';
+    }
+
+    // Funciones del Modal Lightbox Pantalla Completa
+    function abrirLightbox(index) {
+      lightboxIndex = index;
+      document.getElementById('modal-lightbox').classList.add('active');
+      mostrarItemLightbox();
+    }
+
+    function cerrarLightbox() {
+      detenerAutoplay();
+      document.getElementById('modal-lightbox').classList.remove('active');
+      document.getElementById('lightbox-visor').innerHTML = "";
+    }
+
+    function mostrarItemLightbox() {
+      clearTimeout(timerAuto);
+      const visor = document.getElementById('lightbox-visor');
+      visor.innerHTML = "";
+
+      if (galeriaActualItems.length === 0) return;
+
+      const item = galeriaActualItems[lightboxIndex];
+
+      if (item.tipo === "video") {
+        const fileId = item.url.split('/d/')[1]?.split('/')[0] || item.url;
+        
+        if (item.url.endsWith('.mp4') || item.url.endsWith('.webm')) {
+          const videoEl = document.createElement('video');
+          videoEl.src = item.url;
+          videoEl.controls = true;
+          videoEl.autoplay = true;
+          videoEl.style.maxHeight = "85vh";
+          videoEl.style.maxWidth = "90vw";
+
+          videoEl.onended = () => {
+            if (reproduciendoAuto) {
+              navegarLightbox(1);
+            }
+          };
+
+          visor.appendChild(videoEl);
+        } else {
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://drive.google.com/file/d/${fileId}/preview`;
+          iframe.style.width = "80vw";
+          iframe.style.height = "80vh";
+          iframe.allow = "autoplay; fullscreen";
+          iframe.setAttribute("allowfullscreen", "true");
+          visor.appendChild(iframe);
+
+          if (reproduciendoAuto) {
+            timerAuto = setTimeout(() => {
+              navegarLightbox(1);
+            }, 10000);
+          }
+        }
+      } else {
+        const img = document.createElement('img');
+        img.src = item.url;
+        visor.appendChild(img);
+
+        if (reproduciendoAuto) {
+          timerAuto = setTimeout(() => {
+            navegarLightbox(1);
+          }, 5000);
+        }
+      }
+    }
+
+    function navegarLightbox(direccion) {
+      if (galeriaActualItems.length === 0) return;
+      lightboxIndex = (lightboxIndex + direccion + galeriaActualItems.length) % galeriaActualItems.length;
+      mostrarItemLightbox();
+    }
+
+    function toggleAutoplay() {
+      reproduciendoAuto = !reproduciendoAuto;
+      const btn = document.getElementById('btn-lightbox-play');
+      if (reproduciendoAuto) {
+        btn.innerText = "⏸ Pausa";
+        btn.classList.add('playing');
+        mostrarItemLightbox();
+      } else {
+        detenerAutoplay();
+      }
+    }
+
+    function detenerAutoplay() {
+      reproduciendoAuto = false;
+      clearTimeout(timerAuto);
+      const btn = document.getElementById('btn-lightbox-play');
+      if (btn) {
+        btn.innerText = "▶ Play";
+        btn.classList.remove('playing');
+      }
+    }
+
+    // LÓGICA DE ETIQUETAS Y DESCARGA
+    const ORDEN_ETIQUETAS = ['C', 'P', 'B', 'S', 'E', 'X'];
+
+    function cambiarEtiquetaMultimedia(item, tagElement) {
+      let indexActual = ORDEN_ETIQUETAS.indexOf(item.etiqueta || 'C');
+      let indexNuevo = (indexActual + 1) % ORDEN_ETIQUETAS.length;
+      item.etiqueta = ORDEN_ETIQUETAS[indexNuevo];
+
+      tagElement.innerText = item.etiqueta;
+      tagElement.className = `media-tag tag-${item.etiqueta}`;
+
+      const indexEnMemoria = multimediaData.findIndex(m => m.url === item.url);
+      if (indexEnMemoria !== -1) {
+        multimediaData[indexEnMemoria].etiqueta = item.etiqueta;
+      }
+    }
+
+    function descargarJSONActializado(nombreArchivo, datos) {
+      const jsonStr = JSON.stringify(datos, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      
+      const enlace = document.createElement('a');
+      enlace.href = url;
+      enlace.download = nombreArchivo;
+      document.body.appendChild(enlace);
+      enlace.click();
+      
+      document.body.removeChild(enlace);
+      URL.revokeObjectURL(url);
+    }
+
+    // LÓGICA DE GALERÍA Y LISTAS DE REPRODUCCIÓN
+    function inicializarFiltrosGaleria() {
+      const selPersonaje = document.getElementById('filtro-personaje');
+      const selGrupo = document.getElementById('filtro-grupo-sel');
+      const selPais = document.getElementById('filtro-pais');
+
+      selPersonaje.innerHTML = '<option value="todos">Todos</option>';
+      selGrupo.innerHTML = '<option value="todos">Todos</option>';
+      selPais.innerHTML = '<option value="todos">Todas</option>';
+
+      const gruposUnicos = [...new Set(personajesData.map(p => p.grupo))].sort();
+      const paisesUnicos = [...new Set(personajesData.map(p => p.pais))].sort();
+      const personajesOrdenados = [...personajesData].sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+      personajesOrdenados.forEach(p => {
+        selPersonaje.innerHTML += `<option value="${p.id}">${p.nombre}</option>`;
+      });
+      gruposUnicos.forEach(g => {
+        selGrupo.innerHTML += `<option value="${g}">${g}</option>`;
+      });
+      paisesUnicos.forEach(p => {
+        selPais.innerHTML += `<option value="${p}">${p}</option>`;
+      });
+
+      generarPlaylist();
+    }
+
+    function generarPlaylist() {
+      const pId = document.getElementById('filtro-personaje').value;
+      const grupo = document.getElementById('filtro-grupo-sel').value;
+      const pais = document.getElementById('filtro-pais').value;
+      const paisCondicion = document.querySelector('input[name="pais-condicion"]:checked').value;
+      
+      const etiquetasSeleccionadas = Array.from(document.querySelectorAll('.chk-tag:checked')).map(cb => cb.value);
+      const etiquetaCondicion = document.querySelector('input[name="etiqueta-condicion"]:checked').value;
+
+      galeriaActualItems = multimediaData.filter(media => {
+        const personaje = personajesData.find(p => p.id === media.personajeId);
+        if (!personaje) return false;
+
+        if (pId !== 'todos' && personaje.id !== pId) return false;
+        if (grupo !== 'todos' && personaje.grupo !== grupo) return false;
+
+        if (pais !== 'todos') {
+          if (paisCondicion === 'incluir' && personaje.pais !== pais) return false;
+          if (paisCondicion === 'excluir' && personaje.pais === pais) return false;
+        }
+
+        if (etiquetasSeleccionadas.length > 0) {
+          const etiquetaMedia = media.etiqueta || 'C';
+          const incluidaEnSeleccion = etiquetasSeleccionadas.includes(etiquetaMedia);
+          
+          if (etiquetaCondicion === 'incluir' && !incluidaEnSeleccion) return false;
+          if (etiquetaCondicion === 'excluir' && incluidaEnSeleccion) return false;
+        }
+
+        return true;
+      });
+
+      document.getElementById('resultados-conteo').innerText = `Resultados: ${galeriaActualItems.length} archivos`;
+      renderizarPlaylist();
+    }
+
+    function renderizarPlaylist() {
+      const cont = document.getElementById('contenedor-playlist');
+      cont.innerHTML = "";
+
+      if (galeriaActualItems.length === 0) {
+        cont.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>No se encontraron archivos con estos filtros.</p>";
+        return;
+      }
+
+      galeriaActualItems.forEach((item, index) => {
+        const mediaWrapper = document.createElement('div');
+        mediaWrapper.className = 'media-container';
+        
+        const tag = document.createElement('div');
+        tag.className = `media-tag tag-${item.etiqueta || 'C'}`;
+        tag.innerText = item.etiqueta || 'C';
+        tag.onclick = (e) => {
+          e.stopPropagation();
+          cambiarEtiquetaMultimedia(item, tag);
+        };
+
+        if (item.tipo === "video") {
+          const videoContainer = document.createElement('div');
+          videoContainer.style.width = "100%";
+          videoContainer.style.height = "250px";
+          videoContainer.style.background = "#27272a";
+          videoContainer.style.display = "flex";
+          videoContainer.style.justifyContent = "center";
+          videoContainer.style.alignItems = "center";
+          videoContainer.style.cursor = "pointer";
+          videoContainer.style.borderRadius = "8px";
+          videoContainer.innerHTML = "<span style='font-size:40px'>▶️</span>";
+          videoContainer.onclick = () => abrirLightbox(index);
+          
+          mediaWrapper.appendChild(videoContainer);
+        } else {
+          const img = document.createElement('img');
+          img.src = item.url;
+          img.style.cursor = "pointer";
+          img.onclick = () => abrirLightbox(index);
+          mediaWrapper.appendChild(img);
+        }
+
+        mediaWrapper.appendChild(tag);
+        cont.appendChild(mediaWrapper);
+      });
+    }
+
+    function reproducirPlaylist(aleatorio) {
+      if (galeriaActualItems.length === 0) {
+        alert("La lista está vacía. Ajusta los filtros.");
+        return;
+      }
+
+      if (aleatorio) {
+        for (let i = galeriaActualItems.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [galeriaActualItems[i], galeriaActualItems[j]] = [galeriaActualItems[j], galeriaActualItems[i]];
+        }
+        renderizarPlaylist();
+      }
+
+      abrirLightbox(0);
+      if (!reproduciendoAuto) {
+        toggleAutoplay();
+      }
+    }
+
+    // --- LÓGICA DEL ÁREA DE BATALLAS ---
+    
+  function actualizarOpcionesBatalla() {
+      const modoSel = document.getElementById('batalla-modo');
+      const extraDiv = document.getElementById('batalla-filtro-extra');
+      const extraSel = document.getElementById('batalla-valor-extra');
+      const label = document.getElementById('batalla-label-extra');
+      
+      if (!modoSel) return;
+      extraSel.innerHTML = '';
+      
+      if (modoSel.value === 'general') {
+        extraDiv.style.display = 'none';
+      } else {
+        extraDiv.style.display = 'flex';
+        let opciones = [];
+        if (modoSel.value === 'nacionalidad') {
+          label.innerText = 'Seleccionar Nacionalidad:';
+          opciones = [...new Set(personajesData.map(p => p.pais))].sort();
+        } else if (modoSel.value === 'grupo') {
+          label.innerText = 'Seleccionar Grupo:';
+          opciones = [...new Set(personajesData.map(p => p.grupo))].sort();
+        } else if (modoSel.value === 'rango_edad') {
+          label.innerText = 'Seleccionar Rango:';
+          opciones = ['18-24', '25-31', '32-38', '38-60'];
+        }
+        opciones.forEach(op => {
+          extraSel.innerHTML += `<option value="${op}">${op}</option>`;
+        });
+      }
+      iniciarEnfrentamiento();
+    }
+
+    function obtenerCandidatosBatalla() {
+      const modo = document.getElementById('batalla-modo') ? document.getElementById('batalla-modo').value : 'general';
+      const valorExtra = document.getElementById('batalla-valor-extra') ? document.getElementById('batalla-valor-extra').value : '';
+
+      return personajesData.filter(p => {
+        if (modo === 'general') return true;
+        if (modo === 'nacionalidad') return p.pais === valorExtra;
+        if (modo === 'grupo') return p.grupo === valorExtra;
+        if (modo === 'rango_edad') {
+           const edad = calcularEdad(p.fechaNacimiento);
+           if (valorExtra === '18-24') return edad >= 18 && edad <= 24;
+           if (valorExtra === '25-31') return edad >= 25 && edad <= 31;
+           if (valorExtra === '32-38') return edad >= 32 && edad <= 38;
+           if (valorExtra === '38-60') return edad >= 38 && edad <= 60;
+        }
+        return true;
+      });
+    }
+
+    function inicializarFiltrosRanking() {
+      const selGrupo = document.getElementById('ranking-filtro-grupo');
+      const selPais = document.getElementById('ranking-filtro-pais');
+      if (!selGrupo || !selPais) return;
+
+      const valGrupo = selGrupo.value;
+      const valPais = selPais.value;
+
+      selGrupo.innerHTML = '<option value="todos">Todos</option>';
+      selPais.innerHTML = '<option value="todos">Todas</option>';
+
+      const gruposUnicos = [...new Set(personajesData.map(p => p.grupo))].sort();
+      const paisesUnicos = [...new Set(personajesData.map(p => p.pais))].sort();
+
+      gruposUnicos.forEach(g => {
+        selGrupo.innerHTML += `<option value="${g}">${g}</option>`;
+      });
+      paisesUnicos.forEach(p => {
+        selPais.innerHTML += `<option value="${p}">${p}</option>`;
+      });
+
+      if (gruposUnicos.includes(valGrupo)) selGrupo.value = valGrupo;
+      if (paisesUnicos.includes(valPais)) selPais.value = valPais;
+    }  
+    
+
+    function cambiarSectorBatalla(sector) {
+      sectorBatallaActual = sector;
+      document.querySelectorAll('.btn-sector').forEach(b => {
+        b.classList.toggle('active', b.dataset.sector === sector);
+      });
+      iniciarEnfrentamiento();
+    }
+
+    function haGanado(ganadorId, perdedorId, sector) {
+      return batallasData.some(b => b.tag === sector && b.ganadorId === ganadorId && b.perdedorId === perdedorId);
+    }
+
+    function haEnfrentado(id1, id2, sector) {
+      return haGanado(id1, id2, sector) || haGanado(id2, id1, sector);
+    }
+
+    function obtenerEstadisticasPersonaje(personajeId, sector) {
+      let ganadas = 0;
+      let libradas = 0;
+      batallasData.forEach(b => {
+        if (b.tag === sector) {
+          if (b.ganadorId === personajeId) {
+            ganadas++;
+            libradas++;
+          } else if (b.perdedorId === personajeId) {
+            libradas++;
+          }
+        }
+      });
+      return { ganadas, libradas };
+    }
+
+    function obtenerMediaPersonajeSector(personajeId, sector) {
+      if (sector === 'R') {
+        return [{ tipo: 'imagen', url: `personajes/${personajeId}.jpg` }];
+      }
+      const medias = multimediaData.filter(m => m.personajeId === personajeId && (m.etiqueta || 'C') === sector);
+      if (medias.length === 0) {
+        return [{ tipo: 'imagen', url: `personajes/${personajeId}.jpg` }];
+      }
+      return medias;
+    }
+function obtenerSiguienteOponente(ganadorId, sector, candidatosPermitidos = personajesData) {
+      const candidatos = candidatosPermitidos.filter(p => p.id !== ganadorId && !haEnfrentado(ganadorId, p.id, sector));
+      if (candidatos.length === 0) return null;
+      return candidatos[Math.floor(Math.random() * candidatos.length)].id;
+    }
+
+    function iniciarEnfrentamiento(ganadorId = null, esquinaGanadora = null) {
+      const candidatos = obtenerCandidatosBatalla();
+      if (candidatos.length < 2) {
+        document.getElementById('roja-nombre').innerText = "Sin oponentes";
+        document.getElementById('azul-nombre').innerText = "Sin oponentes";
+        document.getElementById('roja-media-box').innerHTML = "";
+        document.getElementById('azul-media-box').innerHTML = "";
+        return;
+      }
+
+      if (!ganadorId) {
+        let p1 = null, p2 = null;
+        for (let i = 0; i < candidatos.length; i++) {
+          for (let j = i + 1; j < candidatos.length; j++) {
+            if (!haEnfrentado(candidatos[i].id, candidatos[j].id, sectorBatallaActual)) {
+              p1 = candidatos[i].id;
+              p2 = candidatos[j].id;
+              break;
+            }
+          }
+          if (p1) break;
+        }
+
+        if (!p1) {
+          participanteRojo = { id: candidatos[0].id, mediaIndex: 0 };
+          participanteAzul = { id: candidatos[1].id, mediaIndex: 0 };
+        } else {
+          participanteRojo = { id: p1, mediaIndex: 0 };
+          participanteAzul = { id: p2, mediaIndex: 0 };
+        }
+      } else {
+        const nuevoOponenteId = obtenerSiguienteOponente(ganadorId, sectorBatallaActual, candidatos);
+        const oponenteFallback = nuevoOponenteId || candidatos.find(p => p.id !== ganadorId)?.id;
+
+        if (esquinaGanadora === 'roja') {
+          participanteRojo = { id: ganadorId, mediaIndex: 0 };
+          participanteAzul = { id: oponenteFallback, mediaIndex: 0 };
+        } else {
+          participanteAzul = { id: ganadorId, mediaIndex: 0 };
+          participanteRojo = { id: oponenteFallback, mediaIndex: 0 };
+        }
+      }
+      renderizarBatalla();
+    }
+
+    function renderizarBatalla() {
+      renderizarEsquina('roja', participanteRojo);
+      renderizarEsquina('azul', participanteAzul);
+    }
+
+    function renderizarEsquina(esquina, participante) {
+      const p = personajesData.find(x => x.id === participante.id);
+      if (!p) return;
+
+      document.getElementById(`${esquina}-nombre`).innerText = p.nombre;
+
+      const mediaBox = document.getElementById(`${esquina}-media-box`);
+      mediaBox.innerHTML = "";
+
+      const medias = obtenerMediaPersonajeSector(p.id, sectorBatallaActual);
+      const mediaActual = medias[participante.mediaIndex % medias.length];
+
+      if (mediaActual.tipo === "video") {
+        const fileId = mediaActual.url.split('/d/')[1]?.split('/')[0] || mediaActual.url;
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://drive.google.com/file/d/${fileId}/preview`;
+        iframe.allow = "autoplay; fullscreen";
+        mediaBox.appendChild(iframe);
+      } else {
+        const img = document.createElement('img');
+        img.src = mediaActual.url;
+        img.onerror = () => { img.src = 'https://via.placeholder.com/250x350?text=Sin+Imagen'; };
+        mediaBox.appendChild(img);
+      }
+
+      // Lógica Botón Flecha
+      const btnFlecha = document.getElementById(`${esquina}-btn-flecha`);
+      if (sectorBatallaActual === 'R' || medias.length <= 1) {
+        btnFlecha.style.display = 'none';
+      } else {
+        btnFlecha.style.display = 'inline-block';
+      }
+
+      // Actualizar Estadísticas
+      const stats = obtenerEstadisticasPersonaje(p.id, sectorBatallaActual);
+      document.getElementById(`${esquina}-stats`).innerText = `Batallas libradas: ${stats.libradas} | Ganadas: ${stats.ganadas}`;
+    }
+
+    function siguienteMultimediaBatalla(esquina) {
+      const participante = esquina === 'roja' ? participanteRojo : participanteAzul;
+      const medias = obtenerMediaPersonajeSector(participante.id, sectorBatallaActual);
+      if (medias.length > 1) {
+        participante.mediaIndex = (participante.mediaIndex + 1) % medias.length;
+        renderizarEsquina(esquina, participante);
+      }
+    }
+
+    function registrarGanador(esquinaGanadora) {
+      const ganadorId = esquinaGanadora === 'roja' ? participanteRojo.id : participanteAzul.id;
+      const perdedorId = esquinaGanadora === 'roja' ? participanteAzul.id : participanteRojo.id;
+
+      if (!ganadorId || !perdedorId || ganadorId === perdedorId) return;
+
+      agregarVictoria(ganadorId, perdedorId, sectorBatallaActual);
+
+      document.getElementById('btn-guardar-batallas').style.display = 'inline-block';
+
+      iniciarEnfrentamiento(ganadorId, esquinaGanadora);
+    }
+
+    function agregarVictoria(ganadorId, perdedorId, sector) {
+      if (!haGanado(ganadorId, perdedorId, sector)) {
+        batallasData.push({
+          id: Date.now().toString() + Math.random().toString(36).substring(2, 6),
+          tag: sector,
+          ganadorId: ganadorId,
+          perdedorId: perdedorId,
+          fecha: new Date().toISOString()
+        });
+      }
+
+      // Propagación transitiva: Si A > B y C > A => C > B
+      let cambios = true;
+      while (cambios) {
+        cambios = false;
+        const batallasSector = batallasData.filter(b => b.tag === sector);
+        for (let b1 of batallasSector) {
+          for (let b2 of batallasSector) {
+            if (b1.perdedorId === b2.ganadorId) {
+              const X = b1.ganadorId;
+              const Z = b2.perdedorId;
+              if (X !== Z && !haGanado(X, Z, sector)) {
+                batallasData.push({
+                  id: Date.now().toString() + Math.random().toString(36).substring(2, 6),
+                  tag: sector,
+                  ganadorId: X,
+                  perdedorId: Z,
+                  auto: true,
+                  fecha: new Date().toISOString()
+                });
+                cambios = true;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    function guardarBatallasJSON() {
+      descargarJSONActializado('batallas.json', batallasData);
+    }
+
+    // --- LÓGICA DE RANKING ---
+    let rankingActual = 'C';
+    let rankingDataActual = [];
+    let ordenColumna = 'puntaje';
+    let ordenAsc = false;
+
+    function iniciarRanking() {
+      cambiarRanking(rankingActual);
+    }
+
+    function cambiarRanking(tipo) {
+      rankingActual = tipo;
+      ordenColumna = 'puntaje';
+      ordenAsc = false;
+      
+      document.querySelectorAll('.btn-ranking').forEach(b => {
+        b.classList.toggle('active', b.innerText.includes(tipo === 'GENERAL' ? 'General' : tipo));
+      });
+
+      calcularDatosRanking();
+      renderizarTablaRanking();
+    }
+
+    function calcularPuntajeSector(sector) {
+      const N = personajesData.length;
+      if (N === 0) return {};
+
+      let victoriasPorPersonaje = {};
+      personajesData.forEach(p => victoriasPorPersonaje[p.id] = 0);
+
+      batallasData.forEach(b => {
+        if (b.tag === sector && victoriasPorPersonaje[b.ganadorId] !== undefined) {
+          victoriasPorPersonaje[b.ganadorId]++;
+        }
+      });
+
+      let ordenados = [...personajesData].sort((a, b) => {
+        return victoriasPorPersonaje[b.id] - victoriasPorPersonaje[a.id];
+      });
+
+      let paso = 100 / N;
+      let puntajes = {};
+      
+      ordenados.forEach((p, index) => {
+        let pje = 100 - (index * paso);
+        puntajes[p.id] = parseFloat(pje.toFixed(2));
+      });
+
+      return puntajes;
+    }
+    function validarRangoEdad(cambiado) {
+      let min = parseInt(document.getElementById('ranking-filtro-edad-min').value);
+      let max = parseInt(document.getElementById('ranking-filtro-edad-max').value);
+      
+      if (min > max) {
+        if (cambiado === 'min') {
+          document.getElementById('ranking-filtro-edad-min').value = max;
+          min = max;
+        } else {
+          document.getElementById('ranking-filtro-edad-max').value = min;
+          max = min;
+        }
+      }
+      document.getElementById('lbl-edad-min').innerText = min;
+      document.getElementById('lbl-edad-max').innerText = max;
+    }
+
+    function toggleModoEdad() {
+      const isExacta = document.getElementById('ranking-edad-exacta').checked;
+      if (isExacta) {
+        document.getElementById('contenedor-rango').style.display = 'none';
+        document.getElementById('contenedor-exacta').style.display = 'block';
+      } else {
+        document.getElementById('contenedor-rango').style.display = 'block';
+        document.getElementById('contenedor-exacta').style.display = 'none';
+      }
+    }
+function calcularDatosRanking() {
+      let dataTemporal = [];
+
+      if (rankingActual === 'GENERAL') {
+        const pC = calcularPuntajeSector('C');
+        const pB = calcularPuntajeSector('B');
+        const pP = calcularPuntajeSector('P');
+        const pR = calcularPuntajeSector('R');
+
+        personajesData.forEach(p => {
+          let sum = (pC[p.id] || 0) + (pB[p.id] || 0) + (pP[p.id] || 0) + (pR[p.id] || 0);
+          let promedio = sum / 4;
+          dataTemporal.push({
+            id: p.id,
+            nombre: p.nombre,
+            pais: p.pais,
+            ciudad: p.ciudad,
+            edad: calcularEdad(p.fechaNacimiento),
+            grupo: p.grupo,
+            puntaje: parseFloat(promedio.toFixed(2))
+          });
+        });
+      } else {
+        const puntajes = calcularPuntajeSector(rankingActual);
+        personajesData.forEach(p => {
+          dataTemporal.push({
+            id: p.id,
+            nombre: p.nombre,
+            pais: p.pais,
+            ciudad: p.ciudad,
+            edad: calcularEdad(p.fechaNacimiento),
+            grupo: p.grupo,
+            puntaje: puntajes[p.id] || 0
+          });
+        });
+      }
+
+      const fGrupo = document.getElementById('ranking-filtro-grupo') ? document.getElementById('ranking-filtro-grupo').value : 'todos';
+      const fPais = document.getElementById('ranking-filtro-pais') ? document.getElementById('ranking-filtro-pais').value : 'todos';
+      
+      const fEdadExactaActiva = document.getElementById('ranking-edad-exacta') ? document.getElementById('ranking-edad-exacta').checked : false;
+      const fEdadExactaVal = document.getElementById('ranking-filtro-edad-exacta') ? parseInt(document.getElementById('ranking-filtro-edad-exacta').value) : 25;
+      const fEdadMin = document.getElementById('ranking-filtro-edad-min') ? parseInt(document.getElementById('ranking-filtro-edad-min').value) : 18;
+      const fEdadMax = document.getElementById('ranking-filtro-edad-max') ? parseInt(document.getElementById('ranking-filtro-edad-max').value) : 60;
+
+      rankingDataActual = dataTemporal.filter(p => {
+        if (fGrupo !== 'todos' && p.grupo !== fGrupo) return false;
+        if (fPais !== 'todos' && p.pais !== fPais) return false;
+        
+        if (fEdadExactaActiva) {
+          if (p.edad !== fEdadExactaVal) return false;
+        } else {
+          if (p.edad < fEdadMin || p.edad > fEdadMax) return false;
+        }
+        return true;
+      });
+
+      ordenarDatosRanking(ordenColumna, ordenAsc);
+    }
+
+    function ordenarDatosRanking(col, asc) {
+      rankingDataActual.sort((a, b) => {
+        let valA = a[col];
+        let valB = b[col];
+
+        if (typeof valA === 'string') {
+          return asc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        }
+        return asc ? valA - valB : valB - valA;
+      });
+    }
+
+    function clickCabecera(col) {
+      if (ordenColumna === col) {
+        ordenAsc = !ordenAsc;
+      } else {
+        ordenColumna = col;
+        ordenAsc = col !== 'puntaje'; 
+      }
+      ordenarDatosRanking(ordenColumna, ordenAsc);
+      renderizarTablaRanking();
+    }
+
+    function renderizarTablaRanking() {
+      const cont = document.getElementById('ranking-table-container');
+      if (rankingDataActual.length === 0) {
+        cont.innerHTML = "<p style='padding: 20px; color: white;'>No hay personajes registrados.</p>";
+        return;
+      }
+
+      let isGeneral = rankingActual === 'GENERAL';
+
+      let html = `<table class="ranking-table"><thead><tr>
+        <th style="width: 60px;">#</th>
+        <th onclick="clickCabecera('nombre')">Personaje ${ordenColumna==='nombre'?(ordenAsc?'▲':'▼'):''}</th>
+      `;
+
+      if (isGeneral) {
+        html += `
+          <th onclick="clickCabecera('pais')">Nacionalidad ${ordenColumna==='pais'?(ordenAsc?'▲':'▼'):''}</th>
+          <th onclick="clickCabecera('ciudad')">Ciudad ${ordenColumna==='ciudad'?(ordenAsc?'▲':'▼'):''}</th>
+          <th onclick="clickCabecera('edad')" class="col-centro">Edad ${ordenColumna==='edad'?(ordenAsc?'▲':'▼'):''}</th>
+          <th onclick="clickCabecera('grupo')">Grupo ${ordenColumna==='grupo'?(ordenAsc?'▲':'▼'):''}</th>
+        `;
+      }
+
+      html += `<th onclick="clickCabecera('puntaje')" class="col-derecha">Puntaje ${ordenColumna==='puntaje'?(ordenAsc?'▲':'▼'):''}</th>
+        </tr></thead><tbody>`;
+
+      rankingDataActual.forEach((p, index) => {
+        let esCoronado = index === 0;
+        let claseFila = esCoronado ? 'coronado' : '';
+        let iconCoronado = esCoronado ? '<span class="coronado-icon">👑</span>' : '';
+        let numRank = index + 1;
+
+        html += `<tr class="${claseFila}">
+          <td>${numRank}</td>
+          <td>
+            <div class="nombre-col">
+              <img class="thumb-rank" src="personajes/${p.id}.jpg" onerror="this.src='https://via.placeholder.com/250x350?text=Sin+Imagen'">
+              ${iconCoronado} ${p.nombre}
+            </div>
+          </td>
+        `;
+
+        if (isGeneral) {
+          html += `
+            <td>${p.pais}</td>
+            <td>${p.ciudad}</td>
+            <td class="col-centro">${p.edad}</td>
+            <td>${p.grupo}</td>
+          `;
+        }
+
+        html += `<td class="col-derecha" style="font-weight: 900; font-size: 16px;">${p.puntaje}</td></tr>`;
+      });
+
+      html += `</tbody></table>`;
+      cont.innerHTML = html;
+    }
+  </script>
 </body>
 </html>
